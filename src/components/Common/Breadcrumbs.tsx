@@ -148,8 +148,8 @@ export default function Breadcrumbs({
               {crumbs[crumbs.length - 1]?.name}
             </span>
             <span className="md:hidden">
-              {crumbs[crumbs.length - 1]?.name.length > 15
-                ? `${crumbs[crumbs.length - 1]?.name.slice(0, 15)}...`
+              {crumbs[crumbs.length - 1]?.name.length > 10
+                ? `${crumbs[crumbs.length - 1]?.name.slice(0, 10)}...`
                 : crumbs[crumbs.length - 1]?.name}
             </span>
           </BreadcrumbPage>
