@@ -1,5 +1,17 @@
+import {
+  Activity,
+  FileText,
+  Heart,
+  Thermometer,
+  Timer,
+  Waves,
+} from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 
 import ButtonV2 from "@/components/Common/ButtonV2";
 import Loading from "@/components/Common/Loading";
@@ -34,17 +46,27 @@ export const DailyRoundListDetails = (props: any) => {
       title={`Consultation Update #${id}`}
       backUrl={`/facility/${facilityId}/patient/${patientId}/consultation/${consultationId}/daily-rounds`}
     >
-      <div
-        className="mt-4 h-full rounded-lg border bg-white p-4 text-black shadow hover:border-primary-500"
-        id="consultation-preview"
-      >
-        <div className="flex justify-between">
-          <div className="max-w-md">
-            <div>
-              <span className="font-semibold leading-relaxed">
-                Patient Category:{" "}
-              </span>
-              {dailyRoundListDetailsData.patient_category ?? "-"}
+      <Card className="w-full max-w-8xl mx-auto my-5">
+        <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-2 sm:space-y-0 pb-4">
+          <div className="space-y-1">
+            <CardTitle>Patient Details</CardTitle>
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+              <div>
+                <span className=" leading-relaxed text-md font-medium">
+                  Patient Category:{" "}
+                </span>
+                <Badge variant={"secondary"}>
+                  {dailyRoundListDetailsData.patient_category ?? "-"}
+                </Badge>
+              </div>
+              <div className="text-sm">
+                <span className=" text-muted-foreground text-md font-medium">
+                  Taken at:{" "}
+                </span>
+                {dailyRoundListDetailsData.taken_at
+                  ? formatDateTime(dailyRoundListDetailsData.taken_at)
+                  : "-"}
+              </div>
             </div>
           </div>
 
@@ -57,103 +79,163 @@ export const DailyRoundListDetails = (props: any) => {
               </ButtonV2>
             </div>
           </div>
-        </div>
-
-        <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
-          <div>
-            <span className="font-semibold leading-relaxed">Temperature: </span>
-            {dailyRoundListDetailsData.temperature ?? "-"}
-          </div>
-          <div>
-            <span className="font-semibold leading-relaxed">Taken at: </span>
-            {dailyRoundListDetailsData.taken_at
-              ? formatDateTime(dailyRoundListDetailsData.taken_at)
-              : "-"}
-          </div>
-          <div>
-            <span className="font-semibold leading-relaxed">SpO2: </span>
-            {dailyRoundListDetailsData.ventilator_spo2 ?? "-"}
-          </div>
-          <div className="capitalize md:col-span-2">
-            <span className="font-semibold leading-relaxed">
-              Admitted To *:{" "}
-            </span>
-            {dailyRoundListDetailsData.admitted_to ?? "-"}
-          </div>
-          <div className="md:col-span-2">
-            <span className="font-semibold leading-relaxed">
-              Physical Examination Info:{" "}
-            </span>
-            {dailyRoundListDetailsData.physical_examination_info ?? "-"}
-          </div>
-          <div className="md:col-span-2">
-            <span className="font-semibold leading-relaxed">
-              Other Details:{" "}
-            </span>
-            {dailyRoundListDetailsData.other_details ?? "-"}
-          </div>
-          <div className="md:col-span-2">
-            <span className="font-semibold leading-relaxed">Pulse(bpm): </span>
-            {dailyRoundListDetailsData.pulse ?? "-"}
-          </div>
-          <div className="md:col-span-2">
-            <span className="font-semibold leading-relaxed">BP</span>
-            <div className="flex flex-row space-x-20">
-              <div className="flex">
-                <span className="font-semibold leading-relaxed">
-                  Systolic:{" "}
-                </span>
-                {dailyRoundListDetailsData.bp?.systolic ?? "-"}
+        </CardHeader>
+        <CardContent className="grid gap-6">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="flex items-center gap-4 rounded-lg border p-4">
+              <Thermometer className="h-5 w-5 text-muted-foreground" />
+              <div>
+                <p className="text-sm font-medium leading-none mb-1">
+                  Temperature:{" "}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {dailyRoundListDetailsData.temperature ?? "-"}
+                </p>
               </div>
-              <div className="flex">
-                {" "}
-                <span className="font-semibold leading-relaxed">
-                  Diastolic:
-                </span>
-                {dailyRoundListDetailsData.bp?.diastolic ?? "-"}
+            </div>
+            <div className="flex items-center gap-4 rounded-lg border p-4">
+              <Waves className="h-5 w-5 text-muted-foreground" />
+              <div>
+                <p className="text-sm font-medium leading-none mb-1">SpO2: </p>
+                <p className="text-sm text-muted-foreground">
+                  {dailyRoundListDetailsData.ventilator_spo2 ?? "-"}
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-4 rounded-lg border p-4">
+              <Heart className="h-5 w-5 text-muted-foreground" />
+              <div>
+                <p className="text-sm font-medium leading-none mb-1">
+                  Pulse (bpm):{" "}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {" "}
+                  {dailyRoundListDetailsData.pulse ?? "-"}
+                </p>
               </div>
             </div>
           </div>
 
-          <div className="md:col-span-2">
-            <span className="font-semibold leading-relaxed">
-              Respiratory Rate (bpm):
-            </span>
+          <Separator />
 
-            {dailyRoundListDetailsData.resp ?? "-"}
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium">Blood Pressure</h3>
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="rounded-lg border p-4">
+                <p className="text-sm font-medium leading-none mb-1">
+                  Systolic:{" "}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {dailyRoundListDetailsData.bp?.systolic ?? "-"}
+                </p>
+              </div>
+              <div className="rounded-lg border p-4">
+                <p className="text-sm font-medium leading-none mb-1">
+                  Diastolic:{" "}
+                </p>
+                <p className="text-sm text-muted-foreground">
+                  {dailyRoundListDetailsData.bp?.diastolic ?? "-"}
+                </p>
+              </div>
+            </div>
           </div>
-          <div className="md:col-span-2">
-            <span className="font-semibold leading-relaxed">Rhythm: </span>
-            {dailyRoundListDetailsData.rhythm ?? "-"}
+
+          <div className="grid gap-6 sm:grid-cols-2">
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium">Respiratory Information</h3>
+              <div className="grid gap-4">
+                <div className="flex items-center gap-4 rounded-lg border p-4">
+                  <Timer className="h-5 w-5 text-muted-foreground" />
+                  <div>
+                    <p className="text-sm font-medium leading-none mb-1">
+                      Respiratory Rate (bpm):{" "}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {dailyRoundListDetailsData.resp ?? "-"}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4 rounded-lg border p-4">
+                  <Activity className="h-5 w-5 text-muted-foreground" />
+                  <div>
+                    <p className="text-sm font-medium leading-none mb-1">
+                      Rhythm:{" "}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {dailyRoundListDetailsData.rhythm ?? "-"}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-4 rounded-lg border p-4">
+                  <FileText className="h-6 w-6 text-muted-foreground" />
+                  <div>
+                    <p className="text-sm font-medium leading-none mb-1">
+                      Rhythm Description:{" "}
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      {dailyRoundListDetailsData.rhythm_detail ?? "-"}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              <h3 className="text-lg font-medium">Additional Information</h3>
+              <div className="grid gap-4">
+                <div className="rounded-lg border p-4">
+                  <p className="text-sm font-medium leading-none mb-1">
+                    Admitted To*:{" "}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {dailyRoundListDetailsData.admitted_to ?? "-"}
+                  </p>
+                </div>
+                <div className="rounded-lg border p-4">
+                  <p className="text-sm font-medium leading-none mb-1">
+                    Level of Consciousness:{" "}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {" "}
+                    {(dailyRoundListDetailsData.consciousness_level &&
+                      t(
+                        `CONSCIOUSNESS_LEVEL__${dailyRoundListDetailsData.consciousness_level}`,
+                      )) ||
+                      "-"}
+                  </p>
+                </div>
+                <div className="rounded-lg border p-4">
+                  <p className="text-sm font-medium leading-none mb-1">
+                    Other Details:{" "}
+                  </p>
+                  <p className="text-sm text-muted-foreground">
+                    {dailyRoundListDetailsData.other_details ?? "-"}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
-          <div className="md:col-span-2">
-            <span className="font-semibold leading-relaxed">
-              Rhythm Description:{" "}
-            </span>
-            {dailyRoundListDetailsData.rhythm_detail ?? "-"}
+
+          <div className="rounded-lg border p-4">
+            <p className="text-sm font-medium"> Physical Examination Info: </p>
+            <p className="text-sm text-muted-foreground">
+              {dailyRoundListDetailsData.physical_examination_info ?? "-"}
+            </p>
           </div>
-          <div className="md:col-span-2">
-            <span className="font-semibold leading-relaxed">
-              Level Of Consciousness:{" "}
-            </span>
-            {(dailyRoundListDetailsData.consciousness_level &&
-              t(
-                `CONSCIOUSNESS_LEVEL__${dailyRoundListDetailsData.consciousness_level}`,
-              )) ||
-              "-"}
+
+          <div className="flex items-center gap-2">
+            <span className="text-sm font-medium">Recommend Discharge: </span>
+            <div>
+              {" "}
+              {dailyRoundListDetailsData.recommend_discharge ? (
+                <span className="badge badge-pill badge-warning">Yes</span>
+              ) : (
+                <span className="badge badge-pill badge-secondary">No</span>
+              )}
+            </div>
           </div>
-          <div>
-            <span className="font-semibold leading-relaxed">
-              Recommend Discharge:{" "}
-            </span>
-            {dailyRoundListDetailsData.recommend_discharge ? (
-              <span className="badge badge-pill badge-warning">Yes</span>
-            ) : (
-              <span className="badge badge-pill badge-secondary">No</span>
-            )}
-          </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </Page>
   );
 };
