@@ -49,7 +49,7 @@ export const DailyRoundListDetails = (props: any) => {
       <Card className="w-full max-w-8xl mx-auto my-5">
         <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-2 sm:space-y-0 pb-4">
           <div className="space-y-1">
-            <CardTitle>Patient Details</CardTitle>
+            <CardTitle className="text-md">Patient Details</CardTitle>
             <div className="flex flex-col sm:flex-row sm:items-center gap-2">
               <div>
                 <span className=" leading-relaxed text-md font-medium">
