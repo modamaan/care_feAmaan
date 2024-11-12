@@ -1,7 +1,9 @@
+import { ClipboardIcon, StethoscopeIcon, UserIcon,Bandage, Bed } from "lucide-react";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import Card from "@/CAREUI/display/Card";
+
 
 import { meanArterialPressure } from "@/components/Common/BloodPressureFormField";
 import ButtonV2 from "@/components/Common/ButtonV2";
@@ -68,30 +70,80 @@ export default function CriticalCarePreview(props: Props) {
         </h2>
 
         <Section title="General">
-          <Detail label="Patient Category" value={data.patient_category} />
-          <Detail
-            label="Physical Examination Info"
-            value={data.physical_examination_info}
-          />
-          <Detail label="Other Details" value={data.other_details} />
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div className="flex items-center gap-4 rounded-lg border p-4">
+              <UserIcon className="h-5 w-5 text-muted-foreground" />{" "}
+              <div>
+                <Detail
+                  label="Patient Category"
+                  value={data.patient_category}
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4 rounded-lg border p-4">
+              <StethoscopeIcon className="h-5 w-5 text-muted-foreground" />{" "}
+              <div>
+                <Detail
+                  label="Physical Examination Info"
+                  value={data.physical_examination_info}
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center gap-4 rounded-lg border p-4">
+              <ClipboardIcon className="h-5 w-5 text-muted-foreground" />{" "}
+              <div>
+                <Detail label="Other Details" value={data.other_details} />
+              </div>
+            </div>
+          </div>
         </Section>
 
         <Section title="Routine">
-          <ChoiceDetail data={data} name="sleep" />
-          <ChoiceDetail data={data} name="bowel_issue" />
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div className="flex items-center gap-4 rounded-lg border p-4">
+              <Bed className="h-5 w-5 text-muted-foreground" />
+              <ChoiceDetail data={data} name="sleep" />
+            </div>
+            <div className="flex items-center gap-4 rounded-lg border p-4">
+              <Bandage className="h-5 w-5 text-muted-foreground" />
+              <ChoiceDetail data={data} name="bowel_issue" />
+            </div>
+          </div>
+
           <Section subSection title="Bladder">
-            <ChoiceDetail data={data} name="bladder_drainage" />
-            <ChoiceDetail data={data} name="bladder_issue" />
-            <Detail
-              label={t("LOG_UPDATE_FIELD_LABEL__is_experiencing_dysuria")}
-              value={data.is_experiencing_dysuria}
-            />
-            <ChoiceDetail data={data} name="urination_frequency" />
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              <div className="flex items-center rounded-lg border p-4">
+                <ChoiceDetail data={data} name="bladder_drainage" />
+              </div>
+              <div className="flex items-center  rounded-lg border p-4">
+                <ChoiceDetail data={data} name="bladder_issue" />
+              </div>
+            </div>
+            <div className="mb-2 max-w-96 space-y-1 rounded border border-secondary-300 bg-secondary-100 p-3 my-4">
+              <Detail
+                label={t("LOG_UPDATE_FIELD_LABEL__is_experiencing_dysuria")}
+                value={data.is_experiencing_dysuria}
+              />
+              <ChoiceDetail data={data} name="urination_frequency" />
+            </div>
           </Section>
+
           <Section subSection title="Nutrition">
-            <ChoiceDetail data={data} name="nutrition_route" />
-            <ChoiceDetail data={data} name="oral_issue" />
-            <ChoiceDetail data={data} name="appetite" />
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              <div className="flex items-center rounded-lg border p-4">
+                <ChoiceDetail data={data} name="nutrition_route" />
+              </div>
+              {data.oral_issue && (
+                <div className="flex items-center  rounded-lg border p-4">
+                  <ChoiceDetail data={data} name="oral_issue" />
+                </div>
+              )}
+              <div className="flex items-center  rounded-lg border p-4">
+                <ChoiceDetail data={data} name="appetite" />
+              </div>
+            </div>
           </Section>
         </Section>
 
@@ -186,8 +238,8 @@ export default function CriticalCarePreview(props: Props) {
           </div>
         </Section>
 
-        <Section title="Arterial Blood Gas Analaysis">
-          <ul className="grid grid-cols-1 gap-3 lg:grid-cols-3">
+        <Section title="Arterial Blood Gas Analysis">
+          <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {ABGAnalysisFields.map((field) => {
               const value = data[field.key];
               return (
@@ -206,34 +258,51 @@ export default function CriticalCarePreview(props: Props) {
         </Section>
 
         <Section title="Blood Sugar">
-          <RangeDetail
-            label="Blood Sugar Level"
-            value={data.blood_sugar_level}
-            valueDescriptions={rangeValueDescription({ low: 69, high: 110 })}
-            max={700}
-            unit="mg/dL"
-          />
-          <Detail label="Dosage" value={data.insulin_intake_dose} />
-          <Detail
-            label="Frequency"
-            value={tOption(
-              "INSULIN_INTAKE_FREQUENCY",
-              "insulin_intake_frequency",
-            )}
-          />
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mb-2 max-w-96 space-y-1 rounded border border-secondary-300 bg-secondary-100 p-3">
+              <RangeDetail
+                label="Blood Sugar Level"
+                value={data.blood_sugar_level}
+                valueDescriptions={rangeValueDescription({
+                  low: 69,
+                  high: 110,
+                })}
+                max={700}
+                unit="mg/dL"
+              />
+            </div>
+            <div>
+              <Detail label="Dosage" value={data.insulin_intake_dose} />
+            </div>
+            <div>
+              <Detail
+                label="Frequency"
+                value={tOption(
+                  "INSULIN_INTAKE_FREQUENCY",
+                  "insulin_intake_frequency",
+                )}
+              />
+            </div>
+          </div>
         </Section>
 
         <Section title="Dialysis">
-          <Detail
-            label="Fluid Balance"
-            value={data.dialysis_fluid_balance}
-            suffix="ml/h"
-          />
-          <Detail
-            label="Net Balance"
-            value={data.dialysis_net_balance}
-            suffix="ml/h"
-          />
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-2">
+            <div>
+              <Detail
+                label="Fluid Balance"
+                value={data.dialysis_fluid_balance}
+                suffix="ml/h"
+              />
+            </div>
+            <div>
+              <Detail
+                label="Net Balance"
+                value={data.dialysis_net_balance}
+                suffix="ml/h"
+              />
+            </div>
+          </div>
         </Section>
 
         <Section title="Vitals" show={!!data.pain_scale_enhanced?.length}>
@@ -263,53 +332,49 @@ export default function CriticalCarePreview(props: Props) {
               />
             </div>
           )}
-          <RangeDetail
-            label={
-              <span>
-                SpO<sub>2</sub>
-              </span>
-            }
-            value={data.ventilator_spo2}
-            max={100}
-            unit="%"
-            valueDescriptions={rangeValueDescription({ low: 89 })}
-          />
-          <RangeDetail
-            label="Temperature"
-            value={data.temperature}
-            max={106}
-            unit="°F"
-            valueDescriptions={rangeValueDescription({ low: 97.4, high: 99.6 })}
-          />
-          <RangeDetail
-            label="Respiratory Rate"
-            value={data.resp}
-            max={150}
-            unit="bpm"
-            valueDescriptions={rangeValueDescription({ low: 11, high: 16 })}
-          />
-          <RangeDetail
-            label="Pulse"
-            value={data.pulse}
-            unit="bpm"
-            max={200}
-            valueDescriptions={[
-              {
-                till: 40,
-                className: "text-red-500",
-                text: "Bradycardia",
-              },
-              {
-                till: 100,
-                className: "text-green-500",
-                text: "Normal",
-              },
-              {
-                className: "text-red-500",
-                text: "Tachycardia",
-              },
-            ]}
-          />
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <RangeDetail
+              label={
+                <span>
+                  SpO<sub>2</sub>
+                </span>
+              }
+              value={data.ventilator_spo2}
+              max={100}
+              unit="%"
+              valueDescriptions={rangeValueDescription({ low: 89 })}
+            />
+            <RangeDetail
+              label="Temperature"
+              value={data.temperature}
+              max={106}
+              unit="°F"
+              valueDescriptions={rangeValueDescription({
+                low: 97.4,
+                high: 99.6,
+              })}
+            />
+            <RangeDetail
+              label="Respiratory Rate"
+              value={data.resp}
+              max={150}
+              unit="bpm"
+              valueDescriptions={rangeValueDescription({ low: 11, high: 16 })}
+            />
+            <RangeDetail
+              label="Pulse"
+              value={data.pulse}
+              unit="bpm"
+              max={200}
+              valueDescriptions={[
+                { till: 40, className: "text-red-500", text: "Bradycardia" },
+                { till: 100, className: "text-green-500", text: "Normal" },
+                { className: "text-red-500", text: "Tachycardia" },
+              ]}
+            />
+          </div>
+
           <Detail
             label={t("LOG_UPDATE_FIELD_LABEL__rhythm")}
             value={data.rhythm && t(`HEARTBEAT_RHYTHM__${data.rhythm}`)}
@@ -318,6 +383,7 @@ export default function CriticalCarePreview(props: Props) {
             label={t("LOG_UPDATE_FIELD_LABEL__rhythm_detail")}
             value={data.rhythm_detail}
           />
+
           {!!data.pain_scale_enhanced?.length && (
             <>
               <h4 className="py-4">Pain Scale</h4>
