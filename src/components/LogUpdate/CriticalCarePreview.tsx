@@ -1,9 +1,7 @@
-import { ClipboardIcon, StethoscopeIcon, UserIcon,Bandage, Bed } from "lucide-react";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 
 import Card from "@/CAREUI/display/Card";
-
 
 import { meanArterialPressure } from "@/components/Common/BloodPressureFormField";
 import ButtonV2 from "@/components/Common/ButtonV2";
@@ -71,8 +69,7 @@ export default function CriticalCarePreview(props: Props) {
 
         <Section title="General">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <div className="flex items-center gap-4 rounded-lg border p-4">
-              <UserIcon className="h-5 w-5 text-muted-foreground" />{" "}
+            <div className="flex items-center rounded-lg border p-4">
               <div>
                 <Detail
                   label="Patient Category"
@@ -81,8 +78,7 @@ export default function CriticalCarePreview(props: Props) {
               </div>
             </div>
 
-            <div className="flex items-center gap-4 rounded-lg border p-4">
-              <StethoscopeIcon className="h-5 w-5 text-muted-foreground" />{" "}
+            <div className="flex items-center rounded-lg border p-4">
               <div>
                 <Detail
                   label="Physical Examination Info"
@@ -91,8 +87,7 @@ export default function CriticalCarePreview(props: Props) {
               </div>
             </div>
 
-            <div className="flex items-center gap-4 rounded-lg border p-4">
-              <ClipboardIcon className="h-5 w-5 text-muted-foreground" />{" "}
+            <div className="flex items-center rounded-lg border p-4">
               <div>
                 <Detail label="Other Details" value={data.other_details} />
               </div>
@@ -102,12 +97,10 @@ export default function CriticalCarePreview(props: Props) {
 
         <Section title="Routine">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <div className="flex items-center gap-4 rounded-lg border p-4">
-              <Bed className="h-5 w-5 text-muted-foreground" />
+            <div className="flex items-center  rounded-lg border p-4">
               <ChoiceDetail data={data} name="sleep" />
             </div>
-            <div className="flex items-center gap-4 rounded-lg border p-4">
-              <Bandage className="h-5 w-5 text-muted-foreground" />
+            <div className="flex items-center  rounded-lg border p-4">
               <ChoiceDetail data={data} name="bowel_issue" />
             </div>
           </div>
