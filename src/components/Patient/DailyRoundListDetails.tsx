@@ -43,8 +43,8 @@ export const DailyRoundListDetails = (props: any) => {
 
   return (
     <Page
-      title={`Consultation Update #${id}`}
-      backUrl={`/facility/${facilityId}/patient/${patientId}/consultation/${consultationId}/daily-rounds`}
+      title={t("log_update") + ` #${id}`}
+      backUrl={`/facility/${facilityId}/patient/${patientId}/consultation/${consultationId}/log_updates`}
     >
       <Card className="w-full max-w-8xl mx-auto my-5">
         <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-2 sm:space-y-0 pb-4">
@@ -73,7 +73,7 @@ export const DailyRoundListDetails = (props: any) => {
           <div>
             <div className="mt-2">
               <ButtonV2
-                href={`/facility/${facilityId}/patient/${patientId}/consultation/${consultationId}/daily-rounds/${id}/update`}
+                href={`/facility/${facilityId}/patient/${patientId}/consultation/${consultationId}/log_updates/${id}/update`}
               >
                 Update Details
               </ButtonV2>
