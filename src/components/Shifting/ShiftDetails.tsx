@@ -297,165 +297,110 @@ export default function ShiftDetails(props: { id: string }) {
     )?.text;
 
     return (
-      <div id="section-to-print" className="print bg-white">
-        <div>
-          {data.is_kasp && <img alt="logo" src={careConfig.headerLogo?.dark} />}
-        </div>
-        <div className="mx-2">
-          <div className="mt-6">
-            <span className="mt-4 font-semibold leading-relaxed">
-              {t("name_of_hospital")}:{" "}
-            </span>
-            {data.is_kasp
-              ? t("district_program_management_supporting_unit")
-              : data.origin_facility_object?.name || "--"}
-            {/*  Made static based on #757 */}
-          </div>
-          <div className="mt-6 text-center text-xl font-bold">
-            {t("referral_letter")}
-          </div>
-          <div className="mt-4 text-left">
-            <span className="font-semibold leading-relaxed">
-              {" "}
-              {t("date_and_time")}{" "}
-            </span>
-            {formatDateTime(data.created_date) || "--"}
-          </div>
-          <div className="mt-2 text-left">
-            <span className="font-semibold leading-relaxed">
-              {" "}
-              {t("unique_id")} :
-            </span>
-            {data.id}
-          </div>
-
-          <div className="mt-4">
-            <div>
-              <span className="font-semibold leading-relaxed">
-                {t("name")}:{" "}
-              </span>
-              {patientData?.name}
-            </div>
-          </div>
-          <div className="mt-2 flex justify-between">
-            <div>
-              <span className="font-semibold leading-relaxed">
-                {t("age")}:{" "}
-              </span>
-              {patientData ? formatPatientAge(patientData, true) : ""}
-            </div>
-            <div>
-              <span className="font-semibold leading-relaxed">
-                {t("gender")}:{" "}
-              </span>
-              {patientGender}
-            </div>
-            <div>
-              <span className="font-semibold leading-relaxed">
-                {t("phone")}:{" "}
-              </span>
-              <span>{patientData?.phone_number || ""}</span>
-            </div>
-          </div>
-          <div className="mt-2 flex text-left">
-            <span className="font-semibold leading-relaxed">
-              {t("address")}:{" "}
-            </span>
-            <div className="ml-2">
-              <div className="whitespace-pre-wrap">
-                {patientData?.address || "-"}
+      <PrintPreview title={t("Patient Referral Letter")} onClose={true} closeFeature={setIsPrintMode} >
+        <Card
+          id="section-to-print"
+          className="print mx-auto w-full bg-white sm:mx-2 sm:my-2"
+        >
+          <CardHeader className="flex flex-col items-start justify-between space-y-2 pb-2 sm:flex-row sm:items-center sm:space-y-0">
+            <CardTitle className="mx-auto my-auto text-lg font-bold sm:text-2xl">
+              {t("referral_letter")}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="mx-2 space-y-3 sm:space-y-4">
+            <div className="space-y-4">
+              <div className="flex flex-col-reverse items-start justify-end sm:flex-row sm:items-center">
+                {data.is_kasp && (
+                  <img alt="logo" src={careConfig.headerLogo?.dark} />
+                )}
+                <QRCodeSVG
+                  value={`${window.location.origin}/shifting/${data.id}`}
+                  size={120}
+                />
               </div>
-              {patientData?.nationality === "India" && (
-                <>
-                  <div>
-                    {patientData?.ward_object?.name},
-                    {patientData?.local_body_object?.name}
-                  </div>
-                  <div>{patientData?.district_object?.name || "-"}</div>
-                  <div>{patientData?.state_object?.name}</div>
-                </>
-              )}
-            </div>
-          </div>
-          <div className="mt-2 flex justify-between">
-            <div>
-              <span className="font-semibold leading-relaxed">
-                {t("date_of_admission")}:{" "}
-              </span>
-              {formatDateTime(
-                consultation.encounter_date || consultation.created_date,
-              ) || "-"}
-            </div>
-            <div>
-              <span className="font-semibold leading-relaxed">
-                {t("patient_no")}:{" "}
-              </span>
-              {consultation.patient_no || "-"}
-            </div>
-          </div>
-          <div className="mt-2 flex justify-between">
-            <div>
-              <span className="font-semibold leading-relaxed">
-                {t("date_of_positive_covid_19_swab")}:{" "}
-              </span>
-              {(patientData?.date_of_test &&
-                formatDateTime(patientData?.date_of_test)) ||
-                "-"}
-            </div>
-          </div>
-
-          {/* <div className="mt-2 flex justify-between">
-            <div>
-              <span className="font-semibold leading-relaxed">
-                {t("diagnosis")}:{" "}
-              </span>
-              {consultation.diagnosis || "-"}
-            </div>
-          </div> */}
-
-          <div className="mt-6 flex justify-between">
-            <div>
-              <span className="font-semibold leading-relaxed">
-                {t("covid_19_cat_gov")}{" "}
-              </span>
-              {consultation.category || "-"}
-            </div>
-          </div>
-
-          <div className="mt-2 flex justify-between">
-            <div>
-              <span className="font-semibold leading-relaxed">
-                {t("referred_to")}:{" "}
-              </span>
-              {data.assigned_facility_external ||
-                data.assigned_facility_object?.name ||
-                "--"}
-            </div>
-          </div>
-
-          <div className="mt-2 flex justify-between">
-            <div>
-              <span className="font-semibold leading-relaxed">
-                {t("reason_for_referral")}:{" "}
-              </span>
-              {data.reason || "--"}
-            </div>
-          </div>
-          <div className="mt-2 flex justify-between">
-            <div>
-              <span className="font-semibold leading-relaxed">
-                {t("treatment_summary")}:{" "}
-              </span>
-              {consultation.treatment_plan || "-"}
-            </div>
-          </div>
-          <div className="mt-6 flex justify-between">
-            <div className="flex">
-              <div>
-                <div className="">
-                  <QRCode
-                    value={`${window.location.origin}/shifting/ data.id`}
-                  />
+              <div className="mt-6">
+                <span className="font-semibold">{t("name_of_hospital")}: </span>
+                {data.is_kasp
+                  ? t("district_program_management_supporting_unit")
+                  : data.origin_facility_object?.name || "--"}
+              </div>
+              <div className="my-4 border-b-2"></div>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div>
+                  <h3 className="mb-1 text-sm font-semibold sm:mb-2 sm:text-base">
+                    Patient Information
+                  </h3>
+                  <p className="text-xs sm:text-sm">
+                    {t("name")}: {patientData?.name}
+                  </p>
+                  <p className="text-xs sm:text-sm">
+                    {t("age")}: {formatPatientAge(patientData, true)}
+                  </p>
+                  <p className="text-xs sm:text-sm">
+                    {t("gender")}: {patientGender || "-"}
+                  </p>
+                  <p className="text-xs sm:text-sm">
+                    {t("phone")}: {patientData?.phone_number || "-"}
+                  </p>
+                </div>
+                <div>
+                  <h3 className="mb-1 text-sm font-semibold sm:mb-2 sm:text-base">
+                    {t("address")}
+                  </h3>
+                  <p className="whitespace-pre-line text-xs sm:text-sm">
+                    {patientData?.address || "-"}
+                  </p>
+                  {patientData?.nationality === "India" && (
+                    <>
+                      <p>
+                        {patientData?.ward_object?.name},{" "}
+                        {patientData?.local_body_object?.name}
+                      </p>
+                      <p>{patientData?.district_object?.name || "-"}</p>
+                      <p>{patientData?.state_object?.name}</p>
+                    </>
+                  )}
+                </div>
+              </div>
+              <div className="my-4 border-b-2"></div>
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-4">
+                <div>
+                  <p className="text-xs sm:text-sm">
+                    {t("date_of_admission")}:{" "}
+                    {formatDateTime(
+                      consultation.encounter_date || consultation.created_date,
+                    ) || "-"}
+                  </p>
+                  <p className="text-xs sm:text-sm">
+                    {t("unique_id")}: {data.id}
+                  </p>
+                  <p className="text-xs sm:text-sm">
+                    {t("patient_no")}: {consultation.patient_no || "-"}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-xs sm:text-sm">
+                    {t("date_of_positive_covid_19_swab")}:{" "}
+                    {(patientData?.date_of_test &&
+                      formatDateTime(patientData.date_of_test)) ||
+                      "-"}
+                  </p>
+                  <p className="text-xs sm:text-sm">
+                    {t("covid_19_cat_gov")}: {consultation.category || "-"}
+                  </p>
+                  <p className="text-xs sm:text-sm">
+                    {t("referred_to")}:{" "}
+                    {data.assigned_facility_external ||
+                      data.assigned_facility_object?.name ||
+                      "--"}
+                  </p>
+                  <p className="text-xs sm:text-sm">
+                    {t("reason_for_referral")}: {data.reason || "--"}
+                  </p>
+                  <p className="text-xs sm:text-sm">
+                    {t("treatment_summary")}:{" "}
+                    {consultation.treatment_plan || "-"}
+                  </p>
                 </div>
               </div>
             </div>
@@ -484,19 +429,6 @@ export default function ShiftDetails(props: { id: string }) {
     <div>
       {isPrintMode ? (
         <div className="my-4">
-          <div className="my-4 flex justify-end gap-3">
-            <ButtonV2 onClick={(_) => window.print()}>
-              <CareIcon icon="l-print" className="mr-2 text-base" />{" "}
-              {t("print_referral_letter")}
-            </ButtonV2>
-            <ButtonV2
-              onClick={(_) => setIsPrintMode(false)}
-              variant="secondary"
-            >
-              <CareIcon icon="l-times" className="mr-2 text-base" />{" "}
-              {t("close")}
-            </ButtonV2>
-          </div>
           {printData(data)}
         </div>
       ) : (

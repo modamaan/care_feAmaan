@@ -1,17 +1,9 @@
-import {
-  Activity,
-  FileText,
-  Heart,
-  Thermometer,
-  Timer,
-  Waves,
-} from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import Separator from "@/components/ui/separator";
 
 import ButtonV2 from "@/components/Common/ButtonV2";
 import Loading from "@/components/Common/Loading";
@@ -83,7 +75,6 @@ export const DailyRoundListDetails = (props: any) => {
         <CardContent className="grid gap-6">
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <div className="flex items-center gap-4 rounded-lg border p-4">
-              <Thermometer className="h-5 w-5 text-muted-foreground" />
               <div>
                 <p className="text-sm font-medium leading-none mb-1">
                   Temperature:{" "}
@@ -94,7 +85,6 @@ export const DailyRoundListDetails = (props: any) => {
               </div>
             </div>
             <div className="flex items-center gap-4 rounded-lg border p-4">
-              <Waves className="h-5 w-5 text-muted-foreground" />
               <div>
                 <p className="text-sm font-medium leading-none mb-1">SpO2: </p>
                 <p className="text-sm text-muted-foreground">
@@ -103,7 +93,6 @@ export const DailyRoundListDetails = (props: any) => {
               </div>
             </div>
             <div className="flex items-center gap-4 rounded-lg border p-4">
-              <Heart className="h-5 w-5 text-muted-foreground" />
               <div>
                 <p className="text-sm font-medium leading-none mb-1">
                   Pulse (bpm):{" "}
@@ -145,7 +134,6 @@ export const DailyRoundListDetails = (props: any) => {
               <h3 className="text-lg font-medium">Respiratory Information</h3>
               <div className="grid gap-4">
                 <div className="flex items-center gap-4 rounded-lg border p-4">
-                  <Timer className="h-5 w-5 text-muted-foreground" />
                   <div>
                     <p className="text-sm font-medium leading-none mb-1">
                       Respiratory Rate (bpm):{" "}
@@ -156,7 +144,6 @@ export const DailyRoundListDetails = (props: any) => {
                   </div>
                 </div>
                 <div className="flex items-center gap-4 rounded-lg border p-4">
-                  <Activity className="h-5 w-5 text-muted-foreground" />
                   <div>
                     <p className="text-sm font-medium leading-none mb-1">
                       Rhythm:{" "}
@@ -167,7 +154,6 @@ export const DailyRoundListDetails = (props: any) => {
                   </div>
                 </div>
                 <div className="flex items-center gap-4 rounded-lg border p-4">
-                  <FileText className="h-6 w-6 text-muted-foreground" />
                   <div>
                     <p className="text-sm font-medium leading-none mb-1">
                       Rhythm Description:{" "}
