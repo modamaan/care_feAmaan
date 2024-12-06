@@ -470,7 +470,10 @@ export default function ShiftDetails(props: { id: string }) {
                 {t("update_status_details")}
               </ButtonV2>
 
-              <ButtonV2 className="w-full sm:w-auto" onClick={() => setIsPrintMode(true)}>
+              <ButtonV2
+                className="w-full sm:w-auto"
+                onClick={() => setIsPrintMode(true)}
+              >
                 <CareIcon icon="l-file-alt" className="mr-2 text-base" />{" "}
                 {t("referral_letter")}
               </ButtonV2>
