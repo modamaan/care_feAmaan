@@ -84,29 +84,35 @@ export default function CriticalCarePreview(props: Props) {
         </h2>
         <Section title="General">
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <div className="flex items-center rounded-lg border p-4">
-              <div>
-                <Detail
-                  label="Patient Category"
-                  value={data.patient_category}
-                />
+            {data?.patient_category && (
+              <div className="flex items-center rounded-lg border p-4">
+                <div>
+                  <Detail
+                    label="Patient Category"
+                    value={data.patient_category}
+                  />
+                </div>
               </div>
-            </div>
+            )}
 
-            <div className="flex items-center rounded-lg border p-4">
-              <div>
-                <Detail
-                  label="Physical Examination Info"
-                  value={data.physical_examination_info}
-                />
+            {data?.physical_examination_info && (
+              <div className="flex items-center rounded-lg border p-4">
+                <div>
+                  <Detail
+                    label="Physical Examination Info"
+                    value={data.physical_examination_info}
+                  />
+                </div>
               </div>
-            </div>
+            )}
 
-            <div className="flex items-center rounded-lg border p-4">
-              <div>
-                <Detail label="Other Details" value={data.other_details} />
+            {data?.other_details && (
+              <div className="flex items-center rounded-lg border p-4">
+                <div>
+                  <Detail label="Other Details" value={data.other_details} />
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </Section>
 
