@@ -2,13 +2,11 @@ import { Link } from "raviger";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Separator from "@/components/ui/separator";
-
 import CareIcon from "@/CAREUI/icons/CareIcon";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import Loading from "@/components/Common/Loading";
 import Page from "@/components/Common/Page";
@@ -112,7 +110,7 @@ export const DailyRoundListDetails = (props: any) => {
             </div>
           </div>
 
-          <Separator />
+          <div className="border-t border-gray-300 my-4"></div>
 
           <div className="space-y-4">
             <h3 className="text-lg font-medium">Blood Pressure</h3>
