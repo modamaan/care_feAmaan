@@ -88,9 +88,17 @@ class PatientLogupdate {
     cy.wait(3000);
   }
 
+  // clickUpdateDetail() {
+  //   cy.verifyAndClickElement("#consultation-preview", "Update Log");
+  //   cy.wait(3000);
+  // }
+
   clickUpdateDetail() {
     cy.verifyAndClickElement("#consultation-preview", "Update Log");
-    cy.wait(3000);
+  
+    // Wait dynamically for the desired element or state to confirm success
+    cy.get("#consultation-preview", { timeout: 10000 }) // Adjust timeout as needed
+      .should("be.visible"); // Ensure the element remains visible after the action
   }
 
   clearIntoElementById(elementId) {
