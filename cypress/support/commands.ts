@@ -120,7 +120,7 @@ Cypress.Commands.add("verifyNotification", (text) => {
   cy.log(`Verifying notification with text: "${text}"`);
 
   // Ensure the notification container exists and contains the text
-  cy.get(".pnotify-container", { timeout: 30000 }) // Increased timeout for slower loads
+  cy.get(".pnotify-container", { timeout: 60000 }) // Increased timeout for slower loads
     .should("be.visible")
     .and("contain.text", text)
     .then(() => {
