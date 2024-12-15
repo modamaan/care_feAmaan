@@ -113,19 +113,8 @@ Cypress.Commands.add(
   },
 );
 
-// Cypress.Commands.add("verifyNotification", (text) => {
-//   return cy.get(".pnotify-container").should("exist").contains(text);
-// });
 Cypress.Commands.add("verifyNotification", (text) => {
-  cy.log(`Verifying notification with text: "${text}"`);
-
-  // Ensure the notification container exists and contains the text
-  cy.get(".pnotify-container", { timeout: 6000000 }) // Increased timeout for slower loads
-    .should("be.visible")
-    .and("contain.text", text)
-    .then(() => {
-      cy.log(`Notification verified: "${text}"`);
-    });
+  return cy.get(".pnotify-container").should("exist").contains(text);
 });
 
 Cypress.Commands.add("clearAllFilters", () => {
