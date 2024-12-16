@@ -2,6 +2,7 @@ import { SyntheticEvent, useEffect, useState } from "react";
 
 import CareIcon from "@/CAREUI/icons/CareIcon";
 
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
 import {
@@ -10,7 +11,6 @@ import {
   ResolvedMiddleware,
 } from "@/components/Assets/AssetTypes";
 import { BedSelect } from "@/components/Common/BedSelect";
-import { Submit } from "@/components/Common/ButtonV2";
 import Loading from "@/components/Common/Loading";
 import { BedModel } from "@/components/Facility/models";
 import { FieldLabel } from "@/components/Form/FormFields/FormField";
@@ -128,10 +128,10 @@ const HL7Monitor = (props: HL7MonitorProps) => {
                     required
                     error={ipadrdress_error}
                   />
-                  <Submit className="w-full">
+                  <Button variant={"primary"} className="flex gap-2 w-full">
                     <CareIcon icon="l-save" />
                     <span>Save Configuration</span>
-                  </Submit>
+                  </Button>
                 </div>
               </form>
             </Card>
@@ -233,10 +233,10 @@ function MonitorConfigure({ asset }: { asset: AssetData }) {
             className="w-full"
           />
         </div>
-        <Submit className="mt-6 w-full shrink-0">
+        <Button variant={"primary"} className="flex gap-2 mt-6 w-full shrink-0">
           <CareIcon icon="l-bed" className="text-lg" />
           {shouldUpdateLink ? "Update Bed" : "Save Bed"}
-        </Submit>
+        </Button>
       </div>
     </form>
   );
