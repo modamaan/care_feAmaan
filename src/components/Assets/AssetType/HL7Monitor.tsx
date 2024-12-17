@@ -128,7 +128,11 @@ const HL7Monitor = (props: HL7MonitorProps) => {
                     required
                     error={ipadrdress_error}
                   />
-                  <Button variant={"primary"} className="flex gap-2 w-full">
+                  <Button
+                    id="submit"
+                    variant={"primary"}
+                    className="flex gap-2 w-full"
+                  >
                     <CareIcon icon="l-save" />
                     <span>Save Configuration</span>
                   </Button>
@@ -233,7 +237,11 @@ function MonitorConfigure({ asset }: { asset: AssetData }) {
             className="w-full"
           />
         </div>
-        <Button variant={"primary"} className="flex gap-2 mt-6 w-full shrink-0">
+        <Button
+          id="submit"
+          variant={"primary"}
+          className="flex gap-2 mt-6 w-full shrink-0"
+        >
           <CareIcon icon="l-bed" className="text-lg" />
           {shouldUpdateLink ? "Update Bed" : "Save Bed"}
         </Button>
