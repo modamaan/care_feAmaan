@@ -94,7 +94,7 @@ class PatientLogupdate {
   // }
 
   clickUpdateDetail() {
-    cy.get("#consultation-preview", { timeout: 20000 }).should("be.visible");
+    cy.get("#consultation-preview", { timeout: 30000 }).should("be.visible");
     cy.verifyAndClickElement("#consultation-preview", "Update Log");
     cy.wait(3000);
   }

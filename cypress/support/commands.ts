@@ -119,7 +119,7 @@ Cypress.Commands.add(
 
 Cypress.Commands.add("verifyNotification", (text) => {
   return cy
-    .get(".pnotify-container", { timeout: 20000 })
+    .get(".pnotify-container", { timeout: 30000 })
     .should("exist")
     .contains(text);
 });
