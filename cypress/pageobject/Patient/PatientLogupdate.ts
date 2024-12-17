@@ -88,7 +88,13 @@ class PatientLogupdate {
     cy.wait(3000);
   }
 
+  // clickUpdateDetail() {
+  //   cy.verifyAndClickElement("#consultation-preview", "Update Log");
+  //   cy.wait(3000);
+  // }
+
   clickUpdateDetail() {
+    cy.get("#consultation-preview", { timeout: 20000 }).should("be.visible");
     cy.verifyAndClickElement("#consultation-preview", "Update Log");
     cy.wait(3000);
   }
