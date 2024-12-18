@@ -92,7 +92,7 @@ const HL7Monitor = (props: HL7MonitorProps) => {
       <div className="mx-auto flex flex-col gap-4 xl:flex-row-reverse">
         {["DistrictAdmin", "StateAdmin"].includes(authUser.user_type) && (
           <div className="flex w-full shrink-0 flex-col gap-4 xl:max-w-xs">
-            <Card className="flex flex-wrap flex-col p-4 m-4 md:m-0 w-1/2 sm:w-2/3 md:w-full">
+            <Card className="flex flex-wrap flex-col p-4 m-1 mt-4 md:m-0 w-[55%] sm:w-3/4 md:w-full">
               <form onSubmit={handleSubmit}>
                 <h2 className="mb-2 text-lg font-bold">Connection</h2>
                 <div className="flex flex-col gap-2">
@@ -140,7 +140,7 @@ const HL7Monitor = (props: HL7MonitorProps) => {
               </form>
             </Card>
             {["HL7MONITOR"].includes(assetType) && (
-              <Card className="p-4 m-4 md:m-0 w-1/2 sm:w-2/3 md:w-full">
+              <Card className="p-4 m-1 md:m-0 w-[55%] sm:w-3/4 md:w-full">
                 <MonitorConfigure asset={asset as AssetData} />
               </Card>
             )}
