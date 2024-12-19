@@ -78,7 +78,10 @@ export default function AssetWarrantyCard(props: { asset: AssetData }) {
               ["Phone", asset.support_phone, "l-phone"],
               ["Email", asset.support_email, "l-envelope"],
             ].map((item) => (
-              <div className="flex flex-wrap items-center">
+              <div
+                key={`support-${item[0]}`}
+                className="flex flex-wrap items-center"
+              >
                 {item[1] && (
                   <>
                     <div className="w-16 italic text-secondary-200">
