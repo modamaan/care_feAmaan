@@ -30,7 +30,7 @@ export default function VentilatorPatientVitalsMonitor(
         <VitalsMonitorHeader patientAssetBed={props.patientAssetBed} />
       )}
       <div className="relative flex flex-col gap-2 divide-x-0 divide-y divide-blue-600 md:flex-row md:justify-between md:divide-x md:divide-y-0">
-        <div className="flex flex-wrap">
+        <div className="flex flex-wrap md:flex-nowrap">
           <div
             className={classNames(
               "flex flex-col items-center justify-center gap-1 p-1 text-center font-mono font-medium text-warning-500",
