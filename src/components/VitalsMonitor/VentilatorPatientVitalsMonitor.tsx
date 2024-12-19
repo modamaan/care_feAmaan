@@ -25,12 +25,12 @@ export default function VentilatorPatientVitalsMonitor(
   }, [props.socketUrl]);
 
   return (
-    <div className="flex flex-col gap-1 rounded bg-[#020617] p-2">
+    <div className="flex flex-col gap-1 rounded bg-[#020617] p-2 w-[55%] m-1 md:w-full md:m-0">
       {props.hideHeader ? null : (
         <VitalsMonitorHeader patientAssetBed={props.patientAssetBed} />
       )}
       <div className="relative flex flex-col gap-2 divide-x-0 divide-y divide-blue-600 md:flex-row md:justify-between md:divide-x md:divide-y-0">
-        <div>
+        <div className="flex flex-wrap">
           <div
             className={classNames(
               "flex flex-col items-center justify-center gap-1 p-1 text-center font-mono font-medium text-warning-500",
