@@ -47,7 +47,7 @@ export default function HL7PatientVitalsMonitor(props: IVitalsComponentProps) {
   );
 
   return (
-    <div className="flex flex-col gap-1 rounded bg-[#020617] p-2">
+    <div className="flex flex-col gap-1 rounded bg-[#020617] p-2 w-[55%] m-1 md:w-full md:m-0">
       {props.hideHeader ? null : (
         <VitalsMonitorHeader patientAssetBed={props.patientAssetBed} />
       )}
@@ -150,7 +150,7 @@ export default function HL7PatientVitalsMonitor(props: IVitalsComponentProps) {
             </div>
           </div>
         </VitalsNonWaveformContent>
-        <div>
+        <div className="flex flex-wrap md:flex-nowrap">
           <div
             className={classNames(
               "flex flex-col items-center justify-center gap-1 p-1 text-center font-mono font-medium text-warning-500",
@@ -203,7 +203,7 @@ export const VitalsNonWaveformContent = ({
 }: {
   children: JSX.Element | JSX.Element[];
 }) => (
-  <div className="z-[5] grid grid-cols-2 gap-x-8 gap-y-4 divide-blue-600 border-b border-blue-600 bg-[#020617] tracking-wider text-white md:absolute md:inset-y-0 md:right-0 md:grid-cols-1 md:gap-0 md:divide-y md:border-b-0 md:border-l">
+  <div className="z-[5] grid grid-cols-2 gap-x-8 gap-y-8 sm:gap-y-4 mt-2  divide-blue-600 border-b border-blue-600 bg-[#020617] tracking-wider text-white md:absolute md:inset-y-0 md:right-0 md:grid-cols-1 md:gap-0 md:divide-y md:border-b-0 md:border-l md:mt-0">
     {children}
   </div>
 );
