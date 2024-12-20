@@ -1314,7 +1314,7 @@ export const ConsultationForm = ({ facilityId, patientId, id }: Props) => {
                       label={
                         state.form.suggestion === "A"
                           ? "IP Number"
-                          : "OP Number"
+                          : "Registration Number"
                       }
                       required={state.form.suggestion === "A"}
                     />
