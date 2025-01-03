@@ -223,9 +223,9 @@ export const FacilityHome = ({ facilityId }: Props) => {
               )}
 
               <div className="absolute inset-x-0 bottom-0 p-6 text-white">
-                <div className="flex items-center gap-6">
+                <div className="flex flex-col sm:flex-row items-center gap-6">
                   <div className="flex-1">
-                    <div className="flex items-center gap-4">
+                    <div className="flex flex-col sm:flex-row items-center gap-4">
                       <Avatar
                         name={facilityData?.name}
                         className="h-12 w-12 shrink-0 rounded-xl border-2 border-white/10 shadow-xl"
@@ -237,7 +237,7 @@ export const FacilityHome = ({ facilityId }: Props) => {
                       </div>
                     </div>
                   </div>
-                  <div className="flex-shrink-0">
+                  <div className="flex-shrink-0 mt-4 md:mt-0">
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
                         <Button
