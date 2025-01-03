@@ -249,16 +249,16 @@ export default function AppointmentsPage(props: { facilityId?: string }) {
           </div>
         </div>
 
-        <div className="flex gap-4 items-center">
+        <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
           <Input
-            className="w-[300px]"
+            className="w-full md:w-[300px]"
             placeholder={t("search")}
             value={qParams.search}
             onChange={(e) => setQParams({ search: e.target.value })}
           />
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant="secondary">
+              <Button variant="secondary" className="w-full md:w-auto">
                 <CareIcon icon="l-filter" className="mr-2" />
                 <span>{t("filter")}</span>
               </Button>
@@ -313,13 +313,16 @@ export default function AppointmentsPage(props: { facilityId?: string }) {
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
       ) : (
-        <AppointmentRow
-          facilityId={facilityId}
-          practitioner={qParams.practitioner}
-          slot={qParams.slot}
-          date={date}
-          search={qParams.search?.toLowerCase()}
-        />
+        <ScrollArea>
+          <AppointmentRow
+            facilityId={facilityId}
+            practitioner={qParams.practitioner}
+            slot={qParams.slot}
+            date={date}
+            search={qParams.search?.toLowerCase()}
+          />
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
       )}
     </Page>
   );
