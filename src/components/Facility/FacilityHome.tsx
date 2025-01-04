@@ -285,7 +285,7 @@ export const FacilityHome = ({ facilityId }: Props) => {
               <Card>
                 <CardContent>
                   <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-12 mt-4">
-                    <div className="flex items-start gap-3">
+                    <div className="flex flex-col sm:flex-row items-start gap-3">
                       <MapPin className="mt-1 h-5 w-5 flex-shrink-0 text-muted-foreground" />
                       <div>
                         {facilityData?.geo_organization && (
