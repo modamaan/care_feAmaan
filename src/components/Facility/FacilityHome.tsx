@@ -134,30 +134,63 @@ export const FacilityHome = ({ facilityId }: Props) => {
   };
 
   const handleCoverImageUpload = async (file: File, onError: () => void) => {
-    const formData = new FormData();
-    formData.append("cover_image", file);
-    const url = `${careConfig.apiUrl}/api/v1/facility/${facilityId}/cover_image/`;
+    const allowedFormats = ["image/jpg", "image/jpeg", "image/png"];
+    const maxSizeInBytes = 1 * 1024 * 1024; // 1MB
 
-    uploadFile(
-      url,
-      formData,
-      "POST",
-      { Authorization: getAuthorizationHeader() },
-      async (xhr: XMLHttpRequest) => {
-        if (xhr.status === 200) {
-          await sleep(1000);
-          facilityFetch();
-          Notification.Success({ msg: "Cover image updated." });
-          setEditCoverImage(false);
-        } else {
-          onError();
-        }
-      },
-      null,
-      () => {
+    if (file.size > maxSizeInBytes) {
+      Notification.Error({ msg: "Max size for image uploaded should be 1MB." });
+      onError();
+      return;
+    }
+
+    const img = new Image();
+    img.src = URL.createObjectURL(file);
+
+    img.onload = async () => {
+      if (!allowedFormats.includes(file.type)) {
+        Notification.Error({ msg: "Allowed formats are jpg, png, jpeg." });
         onError();
-      },
-    );
+        return;
+      }
+
+      if (img.width !== img.height) {
+        Notification.Error({
+          msg: "Aspect ratio for the image should be 1:1.",
+        });
+        onError();
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("cover_image", file);
+      const url = `${careConfig.apiUrl}/api/v1/facility/${facilityId}/cover_image/`;
+
+      uploadFile(
+        url,
+        formData,
+        "POST",
+        { Authorization: getAuthorizationHeader() },
+        async (xhr: XMLHttpRequest) => {
+          if (xhr.status === 200) {
+            await sleep(1000);
+            facilityFetch();
+            Notification.Success({ msg: "Cover image updated." });
+            setEditCoverImage(false);
+          } else {
+            onError();
+          }
+        },
+        null,
+        () => {
+          onError();
+        },
+      );
+    };
+
+    img.onerror = () => {
+      Notification.Error({ msg: "Invalid image file." });
+      onError();
+    };
   };
 
   const handleCoverImageDelete = async (onError: () => void) => {
