@@ -152,7 +152,6 @@ export const FacilityHome = ({ facilityId }: Props) => {
           setEditCoverImage(false);
         } else {
           const response = JSON.parse(xhr.responseText);
-
           response.errors.forEach((error: any) => {
             if (error?.msg?.cover_image) {
               error.msg.cover_image.forEach((errorMsg: string) => {
