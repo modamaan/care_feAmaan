@@ -4,6 +4,7 @@ import { Hospital, MapPin, MoreVertical, Settings, Trash2 } from "lucide-react";
 import { navigate } from "raviger";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -147,16 +148,18 @@ export const FacilityHome = ({ facilityId }: Props) => {
         if (xhr.status === 200) {
           await sleep(1000);
           facilityFetch();
-          Notification.Success({ msg: "Cover image updated." });
+          toast.success("Cover image updated.");
           setEditCoverImage(false);
         } else {
           const response = JSON.parse(xhr.responseText);
 
-          if (response.errors[0]?.msg?.cover_image) {
-            response.errors[0]?.msg?.cover_image.forEach((error: string) => {
-              Notification.Error({ msg: error });
-            });
-          }
+          response.errors.forEach((error: any) => {
+            if (error?.msg?.cover_image) {
+              error.msg.cover_image.forEach((errorMsg: string) => {
+                toast.error(errorMsg);
+              });
+            }
+          });
         }
       },
       null,
