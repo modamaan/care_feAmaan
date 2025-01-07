@@ -219,7 +219,7 @@ export const FacilityHome = ({ facilityId }: Props) => {
               ) : (
                 <div className="relative h-full w-full bg-[radial-gradient(circle_at_50%_120%,rgba(255,255,255,0.2),transparent)]" />
               )}
-
+              {/* merge conflict remove deploy */}
               <div className="absolute inset-x-0 bottom-0 p-6 text-white">
                 <div className="flex flex-wrap items-center gap-4 md:gap-6">
                   <div className="flex-1 min-w-0">
