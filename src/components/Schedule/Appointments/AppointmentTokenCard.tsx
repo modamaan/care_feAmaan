@@ -24,14 +24,14 @@ const AppointmentTokenCard = ({ id, appointment, facility }: Props) => {
   return (
     <Card
       id={id}
-      className="p-6 w-[30rem] border border-gray-300 relative hover:scale-105 hover:rotate-1 hover:shadow-xl transition-all duration-300 ease-in-out"
+      className="p-6 w-full sm:w-[30rem] border border-gray-300 relative hover:scale-105 hover:rotate-1 hover:shadow-xl transition-all duration-300 ease-in-out"
     >
       <div className="absolute inset-0 opacity-[0.1] pointer-events-none bg-[url('/images/care_logo_gray.svg')] bg-center bg-no-repeat bg-[length:60%_auto]" />
 
       <div className="relative">
         <div className="flex items-start justify-between">
           <div>
-            <h3 className="text-lg font-bold tracking-tight">
+            <h3 className="text-base sm:text-lg font-bold tracking-tight">
               {facility.name}
             </h3>
             <div className="text-sm text-gray-600">
@@ -41,7 +41,7 @@ const AppointmentTokenCard = ({ id, appointment, facility }: Props) => {
           </div>
 
           <div>
-            <div className="text-sm whitespace-nowrap text-center bg-gray-100 px-3 pb-2 pt-6 -mt-6 font-medium text-gray-500">
+            <div className="text-xs sm:text-sm whitespace-nowrap text-center bg-gray-100 px-3 pb-2 pt-6 -mt-6 font-medium text-gray-500">
               <p>GENERAL</p>
               <p>OP TOKEN</p>
             </div>
@@ -63,7 +63,7 @@ const AppointmentTokenCard = ({ id, appointment, facility }: Props) => {
               <Label className="text-black font-semibold text-sm/none">
                 Token No.
               </Label>
-              <p className="text-5xl font-bold leading-none">
+              <p className="text-4xl sm:text-5xl font-bold leading-none">
                 {/* TODO: get token number from backend */}
                 {getFakeTokenNumber(appointment)}
               </p>
