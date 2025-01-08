@@ -140,6 +140,7 @@ export default function AppointmentsPage(props: { facilityId?: string }) {
           </TabsList>
         </Tabs>
       }
+      data-sidebar="content"
     >
       <div className="mt-4 py-4 flex flex-col md:flex-row gap-4 justify-between border-t border-gray-200">
         <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
