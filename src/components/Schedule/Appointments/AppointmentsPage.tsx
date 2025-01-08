@@ -318,16 +318,13 @@ export default function AppointmentsPage(props: { facilityId?: string }) {
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
       ) : (
-        <ScrollArea>
-          <AppointmentRow
-            facilityId={facilityId}
-            practitioner={qParams.practitioner}
-            slot={qParams.slot}
-            date={date}
-            search={qParams.search?.toLowerCase()}
-          />
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
+        <AppointmentRow
+          facilityId={facilityId}
+          practitioner={qParams.practitioner}
+          slot={qParams.slot}
+          date={date}
+          search={qParams.search?.toLowerCase()}
+        />
       )}
     </Page>
   );
@@ -482,6 +479,7 @@ function AppointmentRow(props: {
       <div className={cn(!data && "animate-pulse")}>
         <Tabs
           value={status}
+          className="w-full overflow-scroll"
           onValueChange={(value) => setStatus(value as Appointment["status"])}
         >
           <TabsList>
