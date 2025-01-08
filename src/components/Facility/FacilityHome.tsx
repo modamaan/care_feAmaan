@@ -181,7 +181,7 @@ export const FacilityHome = ({ facilityId }: Props) => {
     authUser.user_type === "StateAdmin";
 
   return (
-    <div data-sidebar="content">
+    <div>
       <ConfirmDialog
         title={t("delete_item", { name: facilityData?.name })}
         description={
