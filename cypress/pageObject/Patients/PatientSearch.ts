@@ -33,9 +33,7 @@ export class PatientSearch {
   }
 
   clickSearchPatients() {
-    cy.get('[data-sidebar="content"]', { timeout: 20000 })
-      .contains("Search Patients")
-      .click();
+    cy.get('[data-sidebar="content"]').contains("Search Patients").click();
     return this;
   }
 }
