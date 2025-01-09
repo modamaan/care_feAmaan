@@ -132,7 +132,7 @@ export default function AppointmentDetailsPage(props: Props) {
         [appointment.id]: { name: `Appointment on ${appointmentDate}` },
       }}
     >
-      <div className="container mx-auto p-6 max-w-7xl">
+      <div className="container mx-auto p-0 sm:p-6 max-w-7xl">
         <div
           className={cn(
             "flex flex-col lg:flex-row",
@@ -144,7 +144,7 @@ export default function AppointmentDetailsPage(props: Props) {
             facility={facilityQuery.data}
           />
           <div className="mt-3">
-            <div id="appointment-token-card" className="bg-gray-50 p-4">
+            <div id="appointment-token-card" className="bg-gray-50 p-4 ">
               <AppointmentTokenCard
                 appointment={appointmentQuery.data}
                 facility={facilityQuery.data}
