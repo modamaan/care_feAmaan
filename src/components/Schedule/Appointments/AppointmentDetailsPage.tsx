@@ -135,7 +135,7 @@ export default function AppointmentDetailsPage(props: Props) {
       <div className="container mx-auto p-6 max-w-7xl">
         <div
           className={cn(
-            "flex flex-col md:flex-row",
+            "flex flex-col lg:flex-row",
             isPending && "opacity-50 pointer-events-none animate-pulse",
           )}
         >
@@ -173,7 +173,7 @@ export default function AppointmentDetailsPage(props: Props) {
               </Button>
             </div>
             <Separator className="my-4" />
-            <div className="mx-6 mt-10">
+            <div className="mx-0 sm:mx-6 mt-10">
               <AppointmentActions
                 appointment={appointment}
                 onChange={(status) => updateAppointment({ status })}
