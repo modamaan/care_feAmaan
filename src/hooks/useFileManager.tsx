@@ -1,9 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { t } from "i18next";
 import { useState } from "react";
+import { toast } from "sonner";
 
 import CareIcon from "@/CAREUI/icons/CareIcon";
 
-import { Cancel, Submit } from "@/components/Common/ButtonV2";
+import { Button } from "@/components/ui/button";
+
 import DialogModal from "@/components/Common/Dialog";
 import FilePreviewDialog from "@/components/Common/FilePreviewDialog";
 import { StateInterface } from "@/components/Files/FileUpload";
@@ -16,7 +19,6 @@ import {
   PREVIEWABLE_FILE_EXTENSIONS,
 } from "@/common/constants";
 
-import * as Notification from "@/Utils/Notifications";
 import routes from "@/Utils/request/api";
 import mutate from "@/Utils/request/mutate";
 import query from "@/Utils/request/query";
@@ -144,7 +146,7 @@ export default function useFileManager(
         pathParams: { id: body.id },
       })({} as any),
     onSuccess: () => {
-      Notification.Success({ msg: "File archived successfully" });
+      toast.success(t("file_archived_successfully"));
       queryClient.invalidateQueries({
         queryKey: [`${fileType}-files`, archiveDialogueOpen?.associating_id],
       });
@@ -213,7 +215,7 @@ export default function useFileManager(
         pathParams: { id: body.id },
       })(body),
     onSuccess: (_, { associating_id }) => {
-      Notification.Success({ msg: "File name changed successfully" });
+      toast.success(t("file_name_changed_successfully"));
       setEditDialogueOpen(null);
       onEdit && onEdit();
       queryClient.invalidateQueries({
@@ -306,8 +308,16 @@ export default function useFileManager(
             />
           </div>
           <div className="mt-4 flex flex-col-reverse justify-end gap-2 md:flex-row">
-            <Cancel onClick={() => setArchiveDialogueOpen(null)} />
-            <Submit disabled={archiving} label="Proceed" />
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setArchiveDialogueOpen(null)}
+            >
+              {t("cancel")}
+            </Button>
+            <Button type="submit" variant="primary" disabled={archiving}>
+              {t("proceed")}
+            </Button>
           </div>
         </form>
       </DialogModal>
@@ -384,7 +394,13 @@ export default function useFileManager(
           ))}
         </div>
         <div className="mt-10 flex justify-end">
-          <Cancel onClick={(_) => setArchiveDialogueOpen(null)} />
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => setArchiveDialogueOpen(null)}
+          >
+            {t("cancel")}
+          </Button>
         </div>
       </DialogModal>
       <DialogModal
@@ -425,15 +441,24 @@ export default function useFileManager(
             />
           </div>
           <div className="mt-4 flex flex-col-reverse justify-end gap-2 md:flex-row">
-            <Cancel onClick={() => setEditDialogueOpen(null)} />
-            <Submit
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setEditDialogueOpen(null)}
+            >
+              {t("cancel")}
+            </Button>
+            <Button
+              type="submit"
+              variant="primary"
               disabled={
                 editing === true ||
                 editDialogueOpen?.name === "" ||
                 editDialogueOpen?.name?.length === 0
               }
-              label="Proceed"
-            />
+            >
+              {t("proceed")}
+            </Button>
           </div>
         </form>
       </DialogModal>
@@ -464,7 +489,7 @@ export default function useFileManager(
   ) => {
     try {
       if (!file.id) return;
-      Notification.Success({ msg: "Downloading file..." });
+      toast.success(t("file_download_started"));
       const fileData = await retrieveUpload(file, associating_id);
       const response = await fetch(fileData?.read_signed_url || "");
       if (!response.ok) throw new Error("Network response was not ok.");
@@ -481,8 +506,9 @@ export default function useFileManager(
       // Clean up
       window.URL.revokeObjectURL(blobUrl);
       document.body.removeChild(a);
+      toast.success(t("file_download_completed"));
     } catch (err) {
-      Notification.Error({ msg: "Failed to download file" });
+      toast.error(t("file_download_failed"));
     }
   };
 

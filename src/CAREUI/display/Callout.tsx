@@ -2,10 +2,8 @@ import React from "react";
 
 import { cn } from "@/lib/utils";
 
-import { ButtonVariant } from "@/components/Common/ButtonV2";
-
 interface CalloutProps {
-  variant?: ButtonVariant;
+  variant?: "primary" | "secondary" | "warning" | "alert" | "danger";
   className?: string;
   badge: string;
   children: React.ReactNode;
@@ -18,7 +16,7 @@ export default function Callout({
   return (
     <div
       className={cn(
-        "flex h-min gap-2 rounded-md px-2 py-1.5 text-sm/tight",
+        "flex items-center h-min gap-2 rounded-md px-2 py-2 text-sm/tight",
         {
           primary: "bg-primary-100/50 text-primary-800",
           secondary: "bg-gray-50 text-gray-700",
@@ -31,7 +29,7 @@ export default function Callout({
     >
       <div
         className={cn(
-          "h-min rounded-full border bg-white px-2 py-0.5",
+          "h-min rounded-full border bg-white px-2",
           {
             primary: "border-primary-200",
             secondary: "border-secondary-300",
@@ -43,7 +41,9 @@ export default function Callout({
       >
         <span className="font-medium">{props.badge}</span>
       </div>
-      <span className="font-medium">{props.children}</span>
+      <div className="flex-1">
+        <span className="font-medium">{props.children}</span>
+      </div>
     </div>
   );
 }

@@ -1,3 +1,5 @@
+import { Organization } from "@/types/organization/organization";
+
 export type AppointmentPatientRegister = {
   name: string;
   gender: string;
@@ -14,6 +16,7 @@ export type AppointmentPatient = {
   external_id: string;
   name: string;
   phone_number: string;
+  emergency_phone_number: string;
   address: string;
   date_of_birth?: string;
   year_of_birth?: string;
@@ -23,4 +26,5 @@ export type AppointmentPatient = {
   ward: number;
   pincode: number;
   gender: string;
+  geo_organization: Organization;
 };

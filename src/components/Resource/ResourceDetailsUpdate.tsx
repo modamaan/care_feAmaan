@@ -1,9 +1,12 @@
+import { t } from "i18next";
 import { navigate, useQueryParams } from "raviger";
 import { useReducer, useState } from "react";
+import { toast } from "sonner";
 
 import Card from "@/CAREUI/display/Card";
 
-import { Cancel, Submit } from "@/components/Common/ButtonV2";
+import { Button } from "@/components/ui/button";
+
 import CircularProgress from "@/components/Common/CircularProgress";
 import { FacilitySelect } from "@/components/Common/FacilitySelect";
 import Loading from "@/components/Common/Loading";
@@ -21,7 +24,6 @@ import useAppHistory from "@/hooks/useAppHistory";
 
 import { RESOURCE_CHOICES } from "@/common/constants";
 
-import * as Notification from "@/Utils/Notifications";
 import routes from "@/Utils/request/api";
 import request from "@/Utils/request/request";
 import useTanStackQueryInstead from "@/Utils/request/useQuery";
@@ -176,10 +178,7 @@ export const ResourceDetailsUpdate = (props: resourceProps) => {
 
       if (res && res.status == 200 && data) {
         dispatch({ type: "set_form", form: data });
-        Notification.Success({
-          msg: "Request updated successfully",
-        });
-
+        toast.success(t("request_updated_successfully"));
         navigate(`/resource/${props.id}`);
       } else {
         setIsLoading(false);
@@ -280,8 +279,12 @@ export const ResourceDetailsUpdate = (props: resourceProps) => {
             </div>
 
             <div className="mt-4 flex flex-col justify-between gap-2 md:col-span-2 md:flex-row">
-              <Cancel variant="secondary" onClick={() => goBack()} />
-              <Submit onClick={handleSubmit} />
+              <Button type="button" variant="outline" onClick={() => goBack()}>
+                {t("cancel")}
+              </Button>
+              <Button type="submit" variant="primary" onClick={handleSubmit}>
+                {t("submit")}
+              </Button>
             </div>
           </div>
         </Card>

@@ -118,8 +118,8 @@ function isStaticallyImportedByEntry(
  * 1. GitHub Pages: "organization/repository[@branch]"
  *    Example: "coronasafe/care_fe@main"
  *
- * 2. Local Development: "localhost:port/organization/repository[@branch]"
- *    Example: "localhost:5173/coronasafe/care_fe@main"
+ * 2. Custom URL: "prot://localhost:port|organization/repository[@branch]"
+ *    Example: "http://localhost:5173|coronasafe/care_fe@main"
  *
  * @param enabledApps - Comma-separated list of enabled apps
  * @returns Remote module configuration object for Module Federation
@@ -130,11 +130,11 @@ function getRemotes(enabledApps: string) {
   return enabledApps.split(",").reduce((acc, app) => {
     const [package_, branch = "main"] = app.split("@");
 
-    // Handle localhost development URLs
-    if (package_.startsWith("localhost")) {
-      const [host, ...pathParts] = package_.split("/");
-      const [org, repo] = pathParts.join("/").split("/");
-      const remoteUrl = `"http://${host}/assets/remoteEntry.js"`;
+    // Handle custom URLs
+    if ((package_.includes("|"))) {
+      const [host, pathParts] = package_.split("|");
+      const [org, repo] = pathParts.split("/");
+      const remoteUrl = `"${host}/assets/remoteEntry.js"`;
       console.log(`Using Local Remote Module for ${org}/${repo}:`, remoteUrl);
       return {
         ...acc,
@@ -204,13 +204,6 @@ export default defineConfig(({ mode }) => {
           REACT_SENTRY_DSN: z.string().url().optional(),
           REACT_SENTRY_ENVIRONMENT: z.string().optional(),
 
-          REACT_PLAUSIBLE_SITE_DOMAIN: z
-            .string()
-            .regex(/^[a-zA-Z0-9][a-zA-Z0-9-_.]*\.[a-zA-Z]{2,}$/)
-            .optional()
-            .describe("Domain name without protocol (e.g., sub.domain.com)"),
-
-          REACT_PLAUSIBLE_SERVER_URL: z.string().url().optional(),
           REACT_CDN_URLS: z
             .string()
             .optional()
@@ -302,9 +295,7 @@ export default defineConfig(({ mode }) => {
     preview: {
       headers: {
         "Content-Security-Policy-Report-Only": `default-src 'self';\
-          script-src 'self' blob: 'nonce-f51b9742' https://plausible.10bedicu.in;\
           style-src 'self' 'unsafe-inline';\
-          connect-src 'self' https://plausible.10bedicu.in;\
           img-src 'self' https://cdn.ohc.network ${cdnUrls};\
           object-src 'self' ${cdnUrls};`,
       },

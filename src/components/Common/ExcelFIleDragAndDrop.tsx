@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import * as XLSX from "xlsx";
 
 import CareIcon from "@/CAREUI/icons/CareIcon";
 
-import { Cancel, Submit } from "@/components/Common/ButtonV2";
+import { Button } from "@/components/ui/button";
+
 import ExcelViewer from "@/components/Common/ExcelViewer";
 
 import useDragAndDrop from "@/hooks/useDragAndDrop";
@@ -14,8 +16,6 @@ import schemaParser, {
   ParsedData,
   SchemaType,
 } from "@/common/schemaParser";
-
-import * as Notification from "@/Utils/Notifications";
 
 interface Props {
   handleSubmit: (data: any) => void;
@@ -82,9 +82,7 @@ export default function ExcelFileDragAndDrop({
 
       reader.readAsBinaryString(file);
     } catch (e: any) {
-      Notification.Error({
-        msg: e.message,
-      });
+      toast.error(e.message);
     }
   };
 
@@ -248,7 +246,9 @@ export default function ExcelFileDragAndDrop({
           Upload a file
         </label>
         <div className="sm:flex-1" />
-        <Cancel
+        <Button
+          type="button"
+          variant="outline"
           onClick={() => {
             closeModal();
             setErrors([]);
@@ -257,8 +257,12 @@ export default function ExcelFileDragAndDrop({
             dragProps.setFileDropError("");
           }}
           disabled={loading}
-        />
-        <Submit
+        >
+          {t("close")}
+        </Button>
+        <Button
+          type="submit"
+          variant="primary"
           data-testid="import-btn"
           onClick={() => handleSubmit(validData)}
           disabled={loading || !selectedFile || validData.length === 0}
@@ -273,7 +277,7 @@ export default function ExcelFileDragAndDrop({
               ? "Importing..."
               : `Import ${validData.length} valid fields`}
           </span>
-        </Submit>
+        </Button>
       </div>
     </div>
   );

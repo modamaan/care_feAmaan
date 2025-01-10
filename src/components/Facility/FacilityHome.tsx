@@ -27,7 +27,6 @@ import useAuthUser from "@/hooks/useAuthUser";
 
 import { FACILITY_FEATURE_TYPES } from "@/common/constants";
 
-import * as Notification from "@/Utils/Notifications";
 import routes from "@/Utils/request/api";
 import query from "@/Utils/request/query";
 import request from "@/Utils/request/request";
@@ -123,9 +122,9 @@ export const FacilityHome = ({ facilityId }: Props) => {
       pathParams: { id: facilityId },
       onResponse: ({ res }) => {
         if (res?.ok) {
-          Notification.Success({
-            msg: t("deleted_successfully", { name: facilityData?.name }),
-          });
+          toast.success(
+            t("deleted_successfully", { name: facilityData?.name }),
+          );
         }
         navigate("/facility");
       },
@@ -171,7 +170,7 @@ export const FacilityHome = ({ facilityId }: Props) => {
       pathParams: { id: facilityId },
     });
     if (res?.ok) {
-      Notification.Success({ msg: "Cover image deleted" });
+      toast.success(t("cover_image_deleted"));
       facilityFetch();
       setEditCoverImage(false);
     } else {
@@ -198,7 +197,7 @@ export const FacilityHome = ({ facilityId }: Props) => {
           </span>
         }
         action="Delete"
-        variant="danger"
+        variant="destructive"
         show={openDeleteDialog}
         onClose={handleDeleteClose}
         onConfirm={handleDeleteSubmit}

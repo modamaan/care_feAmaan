@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { toast } from "sonner";
 
-import { Cancel, Submit } from "@/components/Common/ButtonV2";
+import { Button } from "@/components/ui/button";
+
 import { FieldValidator } from "@/components/Form/FieldValidators";
 import {
   FormContextValue,
@@ -15,7 +17,6 @@ import {
 } from "@/components/Form/Utils";
 
 import { DraftSection, useAutoSaveReducer } from "@/Utils/AutoSave";
-import * as Notification from "@/Utils/Notifications";
 import { classNames, isEmpty, omitBy } from "@/Utils/utils";
 
 type Props<T extends FormDetails> = {
@@ -73,7 +74,7 @@ const Form = <T extends FormDetails>({
         dispatch({ type: "set_errors", errors });
 
         if (errors.$all) {
-          Notification.Error({ msg: errors.$all });
+          toast.error(errors.$all);
         }
         return;
       }
@@ -142,19 +143,20 @@ const Form = <T extends FormDetails>({
           {(!hideCancelButton || !hideSubmitButton) && (
             <div className="flex flex-col-reverse justify-end gap-3 sm:flex-row">
               {!hideCancelButton && (
-                <Cancel
-                  onClick={handleCancel}
-                  label={props.cancelLabel ?? "Cancel"}
-                />
+                <Button type="button" variant="outline" onClick={handleCancel}>
+                  {props.cancelLabel ?? "Cancel"}
+                </Button>
               )}
               {!hideSubmitButton && (
-                <Submit
+                <Button
+                  variant="primary"
                   data-testid="submit-button"
                   type="submit"
                   disabled={disabled}
-                  label={props.submitLabel ?? "Submit"}
                   className={props?.submitButtonClassName}
-                />
+                >
+                  {props.submitLabel ?? "Submit"}
+                </Button>
               )}
             </div>
           )}

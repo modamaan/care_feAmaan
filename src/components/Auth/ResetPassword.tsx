@@ -1,15 +1,16 @@
 import { navigate } from "raviger";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 
-import { Cancel, Submit } from "@/components/Common/ButtonV2";
+import { Button } from "@/components/ui/button";
+
 import TextFormField from "@/components/Form/FormFields/TextFormField";
 import { validateRule } from "@/components/Users/UserFormValidations";
 
 import { LocalStorageKeys } from "@/common/constants";
 import { validatePassword } from "@/common/validation";
 
-import * as Notification from "@/Utils/Notifications";
 import routes from "@/Utils/request/api";
 import request from "@/Utils/request/request";
 
@@ -81,9 +82,7 @@ const ResetPassword = (props: ResetPasswordProps) => {
       });
       if (res?.ok) {
         localStorage.removeItem(LocalStorageKeys.accessToken);
-        Notification.Success({
-          msg: t("password_reset_success"),
-        });
+        toast.success(t("password_reset_success"));
         navigate("/login");
       } else if (res && error) {
         setErrors(error);
@@ -173,8 +172,20 @@ const ResetPassword = (props: ResetPasswordProps) => {
                 )}
             </div>
             <div className="grid p-4 sm:flex sm:justify-between">
-              <Cancel onClick={() => navigate("/login")} />
-              <Submit onClick={(e) => handleSubmit(e)} label="reset" />
+              <Button
+                variant="outline"
+                type="button"
+                onClick={() => navigate("/login")}
+              >
+                <span>{t("cancel")}</span>
+              </Button>
+              <Button
+                variant="primary"
+                type="submit"
+                onClick={(e) => handleSubmit(e)}
+              >
+                <span>{t("reset")}</span>
+              </Button>
             </div>
           </form>
         </div>
