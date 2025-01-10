@@ -177,11 +177,20 @@ Cypress.Commands.add("clickAndTypeDate", (selector, date) => {
   cy.get("body").click(0, 0);
 });
 
+// Cypress.Commands.add(
+//   "verifyAndClickElement",
+//   (element: string, reference: string) => {
+//     cy.get(element).scrollIntoView();
+//     cy.get(element).contains(reference).should("be.visible").click();
+//   },
+// );
+
 Cypress.Commands.add(
   "verifyAndClickElement",
   (element: string, reference: string) => {
-    cy.get(element).scrollIntoView();
-    cy.get(element).contains(reference).should("be.visible").click();
+    cy.get(element).scrollIntoView().as("container");
+    cy.get("@container").contains(reference).as("target");
+    cy.get("@target").should("be.visible").click();
   },
 );
 
