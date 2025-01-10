@@ -498,12 +498,15 @@ export default function PatientRegistration(
                       maxLength={2}
                       max={31}
                       min={1}
-                      onChange={(e) =>
+                      onChange={(e) => {
                         setForm((f) => ({
                           ...f,
                           date_of_birth: `${form.date_of_birth?.split("-")[0] || ""}-${form.date_of_birth?.split("-")[1] || ""}-${e.target.value}`,
-                        }))
-                      }
+                        }));
+                        if (e.target.value.length === 2) {
+                          document.getElementById("month-input")?.focus();
+                        }
+                      }}
                     />
                   </div>
                   <div className="flex-1">
@@ -512,18 +515,22 @@ export default function PatientRegistration(
                       <span className="text-red-500">*</span>
                     </Label>
                     <Input
+                      id="month-input"
                       placeholder="MM"
                       type="number"
                       value={form.date_of_birth?.split("-")[1] || ""}
                       maxLength={2}
                       max={12}
                       min={1}
-                      onChange={(e) =>
+                      onChange={(e) => {
                         setForm((f) => ({
                           ...f,
                           date_of_birth: `${form.date_of_birth?.split("-")[0] || ""}-${e.target.value}-${form.date_of_birth?.split("-")[2] || ""}`,
-                        }))
-                      }
+                        }));
+                        if (e.target.value.length === 2) {
+                          document.getElementById("year-input")?.focus();
+                        }
+                      }}
                     />
                   </div>
                   <div className="flex-1">
@@ -532,6 +539,7 @@ export default function PatientRegistration(
                       <span className="text-red-500">*</span>
                     </Label>
                     <Input
+                      id="year-input"
                       type="number"
                       placeholder="YYYY"
                       value={form.date_of_birth?.split("-")[0] || ""}
