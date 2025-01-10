@@ -503,7 +503,12 @@ export default function PatientRegistration(
                           ...f,
                           date_of_birth: `${form.date_of_birth?.split("-")[0] || ""}-${form.date_of_birth?.split("-")[1] || ""}-${e.target.value}`,
                         }));
-                        if (e.target.value.length === 2) {
+                        const day = parseInt(e.target.value);
+                        if (
+                          e.target.value.length === 2 &&
+                          day >= 1 &&
+                          day <= 31
+                        ) {
                           document.getElementById("month-input")?.focus();
                         }
                       }}
@@ -527,7 +532,12 @@ export default function PatientRegistration(
                           ...f,
                           date_of_birth: `${form.date_of_birth?.split("-")[0] || ""}-${e.target.value}-${form.date_of_birth?.split("-")[2] || ""}`,
                         }));
-                        if (e.target.value.length === 2) {
+                        const month = parseInt(e.target.value);
+                        if (
+                          e.target.value.length === 2 &&
+                          month >= 1 &&
+                          month <= 12
+                        ) {
                           document.getElementById("year-input")?.focus();
                         }
                       }}
