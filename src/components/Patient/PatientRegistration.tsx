@@ -493,7 +493,6 @@ export default function PatientRegistration(
                           ...f,
                           date_of_birth: `${form.date_of_birth?.split("-")[0] || ""}-${form.date_of_birth?.split("-")[1] || ""}-${e.target.value}`,
                         }));
-                        // checking cypress issue
                         const day = parseInt(e.target.value);
                         if (
                           e.target.value.length === 2 &&
