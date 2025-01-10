@@ -146,7 +146,7 @@ export const FacilityHome = ({ facilityId }: Props) => {
         if (xhr.status === 200) {
           await sleep(1000);
           facilityFetch();
-          toast.success("Cover image updated.");
+          toast.success(t("cover_image_updated"));
           setEditCoverImage(false);
         } else {
           const response = JSON.parse(xhr.responseText);
