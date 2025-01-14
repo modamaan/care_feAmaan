@@ -26,6 +26,7 @@ import Loading from "@/components/Common/Loading";
 import { FACILITY_FEATURE_TYPES } from "@/common/constants";
 
 import routes from "@/Utils/request/api";
+import { handleStructuredErrors } from "@/Utils/request/errorHandler";
 import query from "@/Utils/request/query";
 import request from "@/Utils/request/request";
 import uploadFile from "@/Utils/request/uploadFile";
@@ -140,7 +141,7 @@ export const FacilityHome = ({ facilityId }: Props) => {
           response.errors.forEach((error: any) => {
             if (error?.msg?.cover_image) {
               error.msg.cover_image.forEach((errorMsg: string) => {
-                toast.error(errorMsg);
+                handleStructuredErrors(new Error(errorMsg));
               });
             }
           });
