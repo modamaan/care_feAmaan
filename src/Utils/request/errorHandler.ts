@@ -85,11 +85,7 @@ function isStructuredError(err: HTTPError["cause"]): err is StructuredError {
   return typeof err === "object" && !Array.isArray(err);
 }
 
-export function handleStructuredErrors(cause: StructuredError | Error) {
-  if (cause instanceof Error) {
-    toast.error(cause.message);
-    return;
-  }
+export function handleStructuredErrors(cause: StructuredError) {
   for (const value of Object.values(cause)) {
     if (Array.isArray(value)) {
       value.forEach((err) => toast.error(err));
