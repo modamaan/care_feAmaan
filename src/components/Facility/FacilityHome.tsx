@@ -140,9 +140,7 @@ export const FacilityHome = ({ facilityId }: Props) => {
           const response = JSON.parse(xhr.responseText);
           response.errors.forEach((error: any) => {
             if (error?.msg?.cover_image) {
-              error.msg.cover_image.forEach((errorMsg: string) => {
-                handleStructuredErrors(new Error(errorMsg));
-              });
+              handleStructuredErrors(error?.msg?.cover_image);
             }
           });
         }
