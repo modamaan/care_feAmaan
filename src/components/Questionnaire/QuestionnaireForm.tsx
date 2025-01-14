@@ -1,3 +1,6 @@
+import { useMutation } from "@tanstack/react-query";
+import { t } from "i18next";
+import { useNavigationPrompt } from "raviger";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -10,8 +13,9 @@ import { Button } from "@/components/ui/button";
 
 import Loading from "@/components/Common/Loading";
 
+import { PLUGIN_Component } from "@/PluginEngine";
 import routes from "@/Utils/request/api";
-import useMutation from "@/Utils/request/useMutation";
+import mutate from "@/Utils/request/mutate";
 import useQuery from "@/Utils/request/useQuery";
 import {
   DetailedValidationError,
@@ -28,7 +32,7 @@ import { QuestionnaireSearch } from "./QuestionnaireSearch";
 import { FIXED_QUESTIONNAIRES } from "./data/StructuredFormData";
 import { getStructuredRequests } from "./structured/handlers";
 
-interface QuestionnaireFormState {
+export interface QuestionnaireFormState {
   questionnaire: QuestionnaireDetail;
   responses: QuestionnaireResponse[];
   errors: QuestionValidationError[];
@@ -60,6 +64,7 @@ export function QuestionnaireForm({
   onCancel,
   facilityId,
 }: QuestionnaireFormProps) {
+  const [isDirty, setIsDirty] = useState(false);
   const [questionnaireForms, setQuestionnaireForms] = useState<
     QuestionnaireFormState[]
   >([]);
@@ -76,10 +81,24 @@ export function QuestionnaireForm({
     prefetch: !!questionnaireSlug && !FIXED_QUESTIONNAIRES[questionnaireSlug],
   });
 
-  const { mutate: submitBatch, isProcessing } = useMutation(
-    routes.batchRequest,
-    { silent: true },
-  );
+  const { mutate: submitBatch, isPending } = useMutation({
+    mutationFn: mutate(routes.batchRequest, { silent: true }),
+    onSuccess: () => {
+      toast.success(t("questionnaire_submitted_successfully"));
+      onSubmit?.();
+    },
+    onError: (error) => {
+      const errorData = error.cause;
+      if (errorData?.results) {
+        handleSubmissionError(errorData.results as ValidationErrorResponse[]);
+      }
+      toast.error(t("questionnaire_submission_failed"));
+    },
+  });
+
+  // TODO: Use useBlocker hook after switching to tanstack router
+  // https://tanstack.com/router/latest/docs/framework/react/guide/navigation-blocking#how-do-i-use-navigation-blocking
+  useNavigationPrompt(isDirty, t("unsaved_changes"));
 
   useEffect(() => {
     if (!isInitialized && questionnaireSlug) {
@@ -104,13 +123,10 @@ export function QuestionnaireForm({
   }
 
   if (questionnaireError) {
-    console.log(questionnaireError);
     return (
       <Alert variant="destructive" className="m-4">
-        <AlertTitle>Error loading questionnaire</AlertTitle>
-        <AlertDescription>
-          The questionnaire you tried to access does not exist.
-        </AlertDescription>
+        <AlertTitle>{t("questionnaire_error_loading")}</AlertTitle>
+        <AlertDescription>{t("questionnaire_not_exist")}</AlertDescription>
       </Alert>
     );
   }
@@ -176,6 +192,7 @@ export function QuestionnaireForm({
   const hasErrors = questionnaireForms.some((form) => form.errors.length > 0);
 
   const handleSubmit = async () => {
+    setIsDirty(false);
     if (hasErrors) return;
 
     const requests: BatchRequest[] = [];
@@ -201,9 +218,9 @@ export function QuestionnaireForm({
 
     // Then, add questionnaire submission requests
     questionnaireForms.forEach((form) => {
-      const nonStructuredResponses = form.responses.filter((response) => {
-        return !response.structured_type;
-      });
+      const nonStructuredResponses = form.responses.filter(
+        (response) => !response.structured_type,
+      );
 
       if (nonStructuredResponses.length > 0) {
         requests.push({
@@ -235,22 +252,7 @@ export function QuestionnaireForm({
       }
     });
 
-    const response = await submitBatch({
-      body: { requests },
-    });
-
-    if (!response.data) {
-      if (response.error) {
-        handleSubmissionError(
-          response.error.results as ValidationErrorResponse[],
-        );
-        toast.error("Failed to submit questionnaire");
-      }
-      return;
-    }
-
-    toast.success("Questionnaire submitted successfully");
-    onSubmit?.();
+    submitBatch({ requests });
   };
 
   return (
@@ -266,7 +268,7 @@ export function QuestionnaireForm({
                   "bg-gray-100 text-green-600",
               )}
               onClick={() => setActiveQuestionnaireId(form.questionnaire.id)}
-              disabled={isProcessing}
+              disabled={isPending}
             >
               {form.questionnaire.title}
             </button>
@@ -285,7 +287,7 @@ export function QuestionnaireForm({
                       setActiveQuestionnaireId(form.questionnaire.id);
                       setActiveGroupId(group.id);
                     }}
-                    disabled={isProcessing}
+                    disabled={isPending}
                   >
                     {group.text}
                   </button>
@@ -296,14 +298,19 @@ export function QuestionnaireForm({
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 overflow-y-auto max-w-3xl pb-8 space-y-2">
+      <PLUGIN_Component
+        __name="Scribe"
+        formState={questionnaireForms}
+        setFormState={setQuestionnaireForms}
+      />
+      <div className="flex-1 overflow-y-auto w-full pb-8 space-y-2">
         {/* Questionnaire Forms */}
         {questionnaireForms.map((form, index) => (
           <div
             key={`${form.questionnaire.id}-${index}`}
-            className="border rounded-lg p-6 space-y-6"
+            className="rounded-lg py-6 px-4 space-y-6"
           >
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center max-w-4xl">
               <div className="space-y-1">
                 <h2 className="text-xl font-semibold">
                   {form.questionnaire.title}
@@ -327,7 +334,7 @@ export function QuestionnaireForm({
                       ),
                     );
                   }}
-                  disabled={isProcessing}
+                  disabled={isPending}
                 >
                   <CareIcon icon="l-times-circle" />
                   <span>Remove</span>
@@ -348,10 +355,14 @@ export function QuestionnaireForm({
                       : formItem,
                   ),
                 );
+                if (!isDirty) {
+                  setIsDirty(true);
+                }
               }}
-              disabled={isProcessing}
+              disabled={isPending}
               activeGroupId={activeGroupId}
               errors={form.errors}
+              patientId={patientId}
               clearError={(questionId: string) => {
                 setQuestionnaireForms((prev) =>
                   prev.map((f) =>
@@ -372,7 +383,10 @@ export function QuestionnaireForm({
 
         {/* Search and Add Questionnaire */}
 
-        <div className="flex gap-4 items-center">
+        <div
+          key={`${questionnaireForms.length}`}
+          className="flex gap-4 items-center m-4 max-w-4xl"
+        >
           <QuestionnaireSearch
             subjectType={subjectType}
             onSelect={(selected) => {
@@ -393,36 +407,36 @@ export function QuestionnaireForm({
                 },
               ]);
             }}
-            disabled={isProcessing}
+            disabled={isPending}
           />
         </div>
 
         {/* Submit and Cancel Buttons */}
         {questionnaireForms.length > 0 && (
-          <div className="flex justify-end gap-4 mt-4">
+          <div className="flex justify-end gap-4 mx-4 mt-4 max-w-4xl">
             <Button
               type="button"
               variant="outline"
               onClick={onCancel}
-              disabled={isProcessing}
+              disabled={isPending}
             >
-              Cancel
+              {t("cancel")}
             </Button>
             <Button
               type="button"
               onClick={handleSubmit}
-              disabled={isProcessing || hasErrors}
+              disabled={isPending || hasErrors}
               className="relative"
             >
-              {isProcessing ? (
+              {isPending ? (
                 <>
-                  <span className="opacity-0">Submit</span>
+                  <span className="opacity-0">{t("submit")}</span>
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="h-5 w-5 animate-spin rounded-full border-b-2 border-white" />
                   </div>
                 </>
               ) : (
-                "Submit"
+                t("submit")
               )}
             </Button>
           </div>
@@ -430,7 +444,7 @@ export function QuestionnaireForm({
 
         {/* Add a Preview of the QuestionnaireForm */}
         {import.meta.env.DEV && (
-          <div className="p-4 space-y-6">
+          <div className="p-4 space-y-6 max-w-4xl">
             <h2 className="text-xl font-semibold">QuestionnaireForm</h2>
             <pre className="text-sm text-muted-foreground">
               {JSON.stringify(questionnaireForms, null, 2)}

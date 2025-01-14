@@ -3,7 +3,7 @@ import { ReactNode, useEffect, useState } from "react";
 
 import CareIcon from "@/CAREUI/icons/CareIcon";
 
-import ButtonV2 from "@/components/Common/ButtonV2";
+import { Button } from "@/components/ui/button";
 
 import { classNames } from "@/Utils/utils";
 
@@ -35,11 +35,6 @@ export const checkForUpdate = async () => {
   }
 
   const meta = await res.json();
-
-  if (appVersion === null) {
-    // Skip updating since the app potentially is the latest version.
-    localStorage.setItem(APP_VERSION_KEY, meta.version);
-  }
 
   if (appVersion !== meta.version) {
     // Trigger an update if key: 'app-version' not present in localStorage
@@ -136,14 +131,9 @@ const UpdateAppPopup = ({ onUpdate }: UpdateAppPopupProps) => {
               A new version of CARE is available
             </p>
           </span>
-          <ButtonV2
-            disabled={isUpdating}
-            onClick={updateApp}
-            variant="alert"
-            className="bg-alert-500 enabled:hover:bg-alert-400"
-          >
+          <Button disabled={isUpdating} onClick={updateApp} variant="alert">
             {isUpdating ? "Updating..." : "Update"}
-          </ButtonV2>
+          </Button>
         </div>
       </Popover>
     </AlertTransition>

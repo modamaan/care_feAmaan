@@ -14,13 +14,13 @@ const buttonVariants = cva(
         destructive:
           "bg-red-500 text-gray-50 shadow-sm hover:bg-red-500/90 dark:bg-red-900 dark:text-gray-50 dark:hover:bg-red-900/90",
         outline:
-          "border border-gray-200 bg-white shadow-sm hover:bg-gray-100 hover:text-gray-900 dark:border-gray-800 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50",
+          "border border-gray-400/75 bg-white shadow-sm hover:bg-gray-100 hover:text-gray-900 dark:border-gray-800 dark:bg-gray-950 dark:hover:bg-gray-800 dark:hover:text-gray-50",
         primary:
           "bg-primary-700 text-white shadow hover:bg-primary-700/90 dark:bg-primary-100 dark:text-primary-900 dark:hover:bg-primary-100/90",
         secondary:
           "bg-gray-100 text-gray-900 shadow-sm hover:bg-gray-100/80 dark:bg-gray-800 dark:text-gray-50 dark:hover:bg-gray-800/80",
         ghost:
-          "hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-gray-50",
+          "underline hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-gray-800 dark:hover:text-gray-50",
         link: "text-gray-900 underline-offset-4 hover:underline dark:text-gray-50",
         outline_primary:
           "border border-primary-700 text-primary-700 bg-white shadow-sm hover:bg-primary-700 hover:text-white dark:border-primary-700 dark:bg-primary-700 dark:text-white",
@@ -28,6 +28,10 @@ const buttonVariants = cva(
           "text-white border border-primary-900 rounded-lg font-medium relative overflow-hidden bg-gradient-to-b from-primary-700 to-primary-800 hover:from-primary-800 hover:to-primary-900 shadow-lg",
         white:
           "bg-white border border-secondary-400 text-gray-900 shadow-sm hover:bg-gray-100 hover:text-gray-900 dark:bg-gray-800 dark:text-gray-50 dark:hover:bg-gray-800/80",
+        warning:
+          "bg-warning-100 text-warning-900 border border-warning-300 shadow-sm hover:bg-warning-100/80 dark:bg-warning-900 dark:text-warning-50 dark:hover:bg-warning-900/80",
+        alert:
+          "bg-alert-100 text-alert-900 border border-alert-300 shadow-sm hover:bg-alert-100/80 dark:bg-alert-900 dark:text-alert-50 dark:hover:bg-alert-900/80",
       },
       size: {
         default: "h-9 px-4 py-2",
@@ -43,6 +47,19 @@ const buttonVariants = cva(
     },
   },
 );
+
+export type ButtonVariant =
+  | "primary"
+  | "outline"
+  | "secondary"
+  | "destructive"
+  | "primary_gradient"
+  | "ghost"
+  | "link"
+  | "white"
+  | "alert"
+  | "warning"
+  | "outline_primary";
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,

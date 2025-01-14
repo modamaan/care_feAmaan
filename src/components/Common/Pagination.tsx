@@ -1,10 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import CareIcon from "@/CAREUI/icons/CareIcon";
 
-import ButtonV2 from "@/components/Common/ButtonV2";
-
-import { statusType, useAbortableEffect } from "@/common/utils";
+import { Button } from "@/components/ui/button";
 
 interface PaginationProps {
   data: { totalCount: number };
@@ -23,19 +21,14 @@ const Pagination = ({
   const [rowsPerPage, setRowsPerPage] = useState(3);
   const [currentPage, setCurrentPage] = useState(1);
 
-  useAbortableEffect(
-    (status: statusType) => {
-      if (!status.aborted) {
-        if (defaultPerPage) {
-          setRowsPerPage(defaultPerPage);
-        }
-        if (cPage) {
-          setCurrentPage(parseInt(`${cPage}`));
-        }
-      }
-    },
-    [defaultPerPage, cPage],
-  );
+  useEffect(() => {
+    if (defaultPerPage) {
+      setRowsPerPage(defaultPerPage);
+    }
+    if (cPage) {
+      setCurrentPage(parseInt(`${cPage}`));
+    }
+  }, [defaultPerPage, cPage]);
 
   const getPageNumbers = () => {
     const totalPage = Math.ceil(data.totalCount / rowsPerPage);
@@ -171,18 +164,17 @@ interface NavButtonProps {
 
 const NavButton = (props: NavButtonProps) => {
   return (
-    <ButtonV2
+    <Button
       id={props.id}
       disabled={props.disabled}
       onClick={props.onClick}
-      ghost={!props.selected}
-      variant={props.selected === undefined ? "secondary" : "primary"}
+      variant={props.selected ? "primary" : "secondary"}
       className="tooltip rounded-none text-sm font-bold"
     >
       {props.children}
       <span className="tooltip-text tooltip-bottom -translate-x-1/2 text-xs font-normal">
         {props.tooltip}
       </span>
-    </ButtonV2>
+    </Button>
   );
 };
