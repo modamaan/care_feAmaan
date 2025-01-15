@@ -229,14 +229,18 @@ export default function ResourceDetails(props: { id: string }) {
       <div className="mx-auto max-w-7xl space-y-6 p-4 md:p-6">
         {/* Action Buttons */}
         <div className="flex items-center justify-between">
-          <div className="flex gap-2">
-            <Button onClick={() => setIsPrintMode(true)}>
+          <div className="flex flex-wrap gap-2">
+            <Button
+              onClick={() => setIsPrintMode(true)}
+              className="w-full sm:w-auto"
+            >
               <CareIcon icon="l-file-alt" className="mr-2 h-4 w-4" />
               {t("request_letter")}
             </Button>
             <Button
               variant="outline"
               onClick={() => navigate(`/resource/${data.id}/update`)}
+              className="w-full sm:w-auto"
             >
               <CareIcon icon="l-edit" className="mr-2 h-4 w-4" />
               {t("update_status")}
