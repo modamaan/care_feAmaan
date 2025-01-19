@@ -569,6 +569,24 @@ const FileUploadDialog = ({
   associatingId: string;
 }) => {
   const { t } = useTranslation();
+  const [previewFile, setPreviewFile] = useState<string | null>(null);
+  const [previewFileType, setPreviewFileType] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (fileUpload.files.length > 0) {
+      handlePreview(fileUpload.files[0]);
+    }
+  }, [fileUpload.files]);
+
+  const handlePreview = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setPreviewFile(e.target?.result as string);
+      setPreviewFileType(file.type);
+    };
+    reader.readAsDataURL(file);
+  };
+
   return (
     <Dialog
       open={open}
@@ -614,6 +632,24 @@ const FileUploadDialog = ({
                   index === 0 && fileUpload.error ? fileUpload.error : undefined
                 }
               />
+              {previewFile && (
+                <div className="mt-2">
+                  {previewFileType === "application/pdf" ? (
+                    <embed
+                      src={previewFile}
+                      type="application/pdf"
+                      width="100%"
+                      height="200px"
+                    />
+                  ) : (
+                    <img
+                      src={previewFile}
+                      alt="Preview"
+                      className="max-w-full h-auto"
+                    />
+                  )}
+                </div>
+              )}
             </div>
           ))}
         </div>
