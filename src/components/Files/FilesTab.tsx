@@ -575,16 +575,27 @@ const FileUploadDialog = ({
   useEffect(() => {
     if (fileUpload.files.length > 0) {
       handlePreview(fileUpload.files[0]);
+    } else {
+      setPreviewFile(null);
+      setPreviewFileType(null);
     }
   }, [fileUpload.files]);
 
   const handlePreview = (file: File) => {
     const reader = new FileReader();
+    reader.onerror = () => {
+      console.error("Error reading file");
+      setPreviewFile(null);
+      setPreviewFileType(null);
+    };
     reader.onload = (e) => {
       setPreviewFile(e.target?.result as string);
       setPreviewFileType(file.type);
     };
     reader.readAsDataURL(file);
+    return () => {
+      reader.abort();
+    };
   };
 
   return (
